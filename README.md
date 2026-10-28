@@ -1,42 +1,51 @@
-# mottor-ai-back · Spec-Driven Development
+# mottor-ai-back
 
-Backend Laravel del *Mottor.ai Senior Full-Stack Challenge* (proyecto de prueba). Se trabaja con **Spec-Driven Development** según [GitHub Spec Kit](https://github.com/github/spec-kit): primero la especificación y después el código.
+API REST en Laravel de **Mottor AI** (*Mottor.ai Senior Full-Stack Challenge*).
 
-## Flujo SDD
+## Specs
 
-| Paso | Comando Spec Kit | Resultado | Gate |
-|---|---|---|---|
-| 1. Constitution | `/speckit-constitution` | `.specify/memory/constitution.md` | Aprobada por Juan |
-| 2. Spec | `/speckit-specify` | `specs/NNN-feature/spec.md` (Draft) | — |
-| 3. Clarify | `/speckit-clarify` | Se resuelven los `[NEEDS CLARIFICATION]` | spec **Approved** por Juan |
-| 4. Plan | `/speckit-plan` | `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md` | Constitution Check ✅ |
-| 5. Tasks | `/speckit-tasks` (+ `/speckit-analyze`) | `tasks.md` | — |
-| 6. Implement | `/speckit-implement` | Código + tests, una rama por feature (`NNN-feature`) | CI verde + review |
+Este repo **no** contiene specs. La spec, el contrato OpenAPI, el plan y las tareas viven en **[mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs)** (enfoque spec-anchored):
 
-**Regla de oro**: ninguna tarea se implementa sin una spec aprobada por Juan.
+- Spec actual: [`specs/001-quotes-mvp/spec.md`](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/spec.md)
+- Plan y tareas de este repo: [`specs/001-quotes-mvp/backend/`](https://github.com/Juanperezc/mottor-ai-specs/tree/main/specs/001-quotes-mvp/backend)
+- Contrato: [`specs/001-quotes-mvp/contracts/openapi.yaml`](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/contracts/openapi.yaml)
+- Constitución: [`.specify/memory/constitution.md`](https://github.com/Juanperezc/mottor-ai-specs/blob/main/.specify/memory/constitution.md)
 
-## Dónde está cada cosa
+Si un cambio altera comportamiento, **primero** se actualiza la spec en `mottor-ai-specs` y después el código.
 
-```text
-.specify/
-├── memory/constitution.md   # principios no negociables (SOLID, contrato, sin float, tests...)
-└── templates/               # plantillas oficiales de Spec Kit (spec, plan, tasks, checklist, constitution)
-specs/
-└── 001-quotes-mvp/          # Feature 1: Dashboard, Import, Quote Detail (estado: Draft)
-    ├── spec.md              # user stories + requisitos (compartida con mottor-ai-front)
-    ├── plan.md              # stack y arquitectura de este repo
-    ├── research.md          # decisiones técnicas y alternativas
-    ├── data-model.md        # modelo de datos de este repo
-    ├── quickstart.md        # cómo validar end-to-end
-    ├── contracts/openapi.yaml  # contrato de API (idéntico en mottor-ai-front)
-    └── tasks.md             # tareas numeradas con dependencias y [P]
+## Setup rápido
+
+```bash
+git clone https://github.com/Juanperezc/mottor-ai-specs ../mottor-ai-specs   # SPECS_PATH por defecto
+composer install && cp .env.example .env && php artisan key:generate
+php artisan migrate --seed
+php artisan queue:work &   # import asíncrono
+php artisan serve
+./vendor/bin/pest          # incluye contract tests contra $SPECS_PATH
 ```
 
-## Convenciones
+Detalle: `specs/001-quotes-mvp/backend/quickstart.md` en mottor-ai-specs.
 
-- `spec.md` y `contracts/openapi.yaml` son **copias idénticas** en `mottor-ai-back` y `mottor-ai-front`. Si se cambian, se cambian en los dos repos en el mismo PR o ciclo.
-- `[NEEDS CLARIFICATION: ...]` marca supuestos pendientes. Todavía no tenemos el enunciado oficial del challenge.
-- Documentación en español; código, identificadores y OpenAPI en inglés.
-- En `tasks.md`, `[P]` significa paralelizable y `[USn]` es la user story.
+## Git flow
 
-Para usar los comandos `/speckit-*` con un agente: `uv tool install specify-cli` y después `specify init --here` (conservando los archivos existentes).
+```text
+staging ──► feat/<scope>-<descripcion> ──PR──► staging ──PR (release)──► main
+```
+
+- Las ramas salen de `staging`: `feat/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`.
+- PR a `staging` con CI verde y review. Para liberar, PR de `staging` a `main`. Sin commits directos a `staging` ni a `main`.
+
+## Conventional Commits
+
+`<type>(<scope opcional>): <descripción en imperativo>`. Tipos: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `perf`, `build`, `ci`, `chore`, `revert`.
+
+```text
+feat(rules): add percentage discount strategy
+
+Spec: 001-quotes-mvp
+Tasks: T021, T023
+```
+
+## Referenciar la spec en PRs
+
+Completá la plantilla [`.github/pull_request_template.md`](.github/pull_request_template.md): `Spec: 001-quotes-mvp` y `Tasks: T0xx, ...` (IDs de `backend/tasks.md`). Al mergear, marcá las tareas `[x]` en mottor-ai-specs.
