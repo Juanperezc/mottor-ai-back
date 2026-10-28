@@ -6,11 +6,11 @@ Mandatory rules for any AI agent or person working on `mottor-ai-back`. Follow t
 
 1. **Read the specs before any task.** Open [mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs) and read:
    - the constitution: `.specify/memory/constitution.md`;
-   - the feature spec in `specs/<feature>/`: `spec.md`, `plan.md`, `tasks.md`, `contracts/openapi.yaml` and `fixtures/`.
+   - the feature spec in `specs/<feature>/`: `spec.md`, `plan.md`, `tasks.md` and `fixtures/`.
 2. **No spec, no code.** Do not write code unless a spec requirement and a task in `tasks.md` back it.
 3. **The spec wins.** If code and spec disagree, the spec is right. Stop, and propose the change as a PR to `mottor-ai-specs`. Change code only after the spec is updated.
-4. **Never create specs here.** No `spec.md`, `plan.md`, `tasks.md`, `contracts/` or `fixtures/` in this repo. Specs live only in `mottor-ai-specs`.
-5. **Follow the contract.** Request and response shapes come from `contracts/openapi.yaml`. Do not add, rename or drop fields on your own.
+4. **Never create specs here.** No `spec.md`, `plan.md`, `tasks.md` or `fixtures/` in this repo. Specs live only in `mottor-ai-specs`.
+5. **This repo owns the API contract.** The OpenAPI is generated from code with Scramble (Swagger UI at `/docs/api`) and exported to `docs/api/openapi.json`. Every endpoint change updates the code **and** regenerates the export (`./vendor/bin/sail artisan scramble:export`) in the same PR. Endpoint behavior still comes from the spec: never add, rename or drop fields without a spec requirement.
 
 ## Git workflow
 

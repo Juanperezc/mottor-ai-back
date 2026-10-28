@@ -6,10 +6,10 @@ Laravel REST API for **Mottor AI**, the *Mottor.ai Senior Full-Stack Challenge* 
 
 ## Specs
 
-This repo does **not** contain specs. The spec, the OpenAPI contract, the plan, the tasks and the fixtures live in **[mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs)** (spec-anchored, GitHub Spec Kit):
+This repo does **not** contain specs. The spec, the plan, the tasks and the fixtures live in **[mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs)** (spec-anchored, GitHub Spec Kit):
 
 - Constitution: [`.specify/memory/constitution.md`](https://github.com/Juanperezc/mottor-ai-specs/blob/main/.specify/memory/constitution.md)
-- Feature specs: [`specs/`](https://github.com/Juanperezc/mottor-ai-specs/tree/main/specs) (`spec.md`, `plan.md`, `tasks.md`, `contracts/openapi.yaml`, `fixtures/`)
+- Feature specs: [`specs/`](https://github.com/Juanperezc/mottor-ai-specs/tree/main/specs) (`spec.md`, `plan.md`, `tasks.md`, `fixtures/`)
 
 If a change alters behavior, update the spec in `mottor-ai-specs` **first**, then the code.
 
@@ -27,6 +27,7 @@ If a change alters behavior, update the spec in `mottor-ai-specs` **first**, the
 | Money | [`brick/math`](https://github.com/brick/math) exact decimals, rounding `HALF_UP` by default (configurable) |
 | Tests | PHPUnit 12 (Laravel 13 default) via `php artisan test` |
 | Coverage | PCOV or Xdebug, both shipped in the Sail PHP 8.5 image |
+| API docs | [Scramble](https://scramble.dedoc.co/) (`dedoc/scramble`): OpenAPI generated from code, Swagger UI at `/docs/api` |
 | Code style | Laravel Pint |
 
 ## Quick start
@@ -42,7 +43,23 @@ composer install                       # or the Sail one-off container, see Sail
 ./vendor/bin/sail artisan reverb:start # websocket server
 ```
 
+API docs: `http://localhost/docs/api`.
+
 Tip: `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`.
+
+## API documentation
+
+This repo **owns the API contract**. The OpenAPI document is generated from the code (routes, FormRequests, API Resources) with [Scramble](https://scramble.dedoc.co/):
+
+- Swagger UI: `http://localhost/docs/api` (raw JSON at `/docs/api.json`).
+- Exported file: [`docs/api/openapi.json`](docs/api/openapi.json), regenerated with:
+
+  ```bash
+  ./vendor/bin/sail artisan scramble:export --path=docs/api/openapi.json
+  ```
+
+- Every PR that changes an endpoint regenerates and commits the export. The frontend generates its API types from this file.
+- Until Scramble is installed, [`docs/api/openapi.yaml`](docs/api/openapi.yaml) holds the hand-written draft moved from mottor-ai-specs. The first export replaces it.
 
 ## Test coverage
 
