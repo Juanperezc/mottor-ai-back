@@ -1,42 +1,122 @@
-# mottor-ai-back · Spec-Driven Development
+# mottor-ai-back
 
-Backend Laravel del *Mottor.ai Senior Full-Stack Challenge* (proyecto de prueba). Se trabaja con **Spec-Driven Development** según [GitHub Spec Kit](https://github.com/github/spec-kit): primero la especificación y después el código.
+Laravel REST API for **Mottor AI**, the *Mottor.ai Senior Full-Stack Challenge* ("Quote calculator with commercial rules").
 
-## Flujo SDD
+> Working on this repo? Read [AGENTS.md](AGENTS.md) first. Following the specs is mandatory.
 
-| Paso | Comando Spec Kit | Resultado | Gate |
-|---|---|---|---|
-| 1. Constitution | `/speckit-constitution` | `.specify/memory/constitution.md` | Aprobada por Juan |
-| 2. Spec | `/speckit-specify` | `specs/NNN-feature/spec.md` (Draft) | — |
-| 3. Clarify | `/speckit-clarify` | Se resuelven los `[NEEDS CLARIFICATION]` | spec **Approved** por Juan |
-| 4. Plan | `/speckit-plan` | `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md` | Constitution Check ✅ |
-| 5. Tasks | `/speckit-tasks` (+ `/speckit-analyze`) | `tasks.md` | — |
-| 6. Implement | `/speckit-implement` | Código + tests, una rama por feature (`NNN-feature`) | CI verde + review |
+## Specs
 
-**Regla de oro**: ninguna tarea se implementa sin una spec aprobada por Juan.
+This repo does **not** contain specs. The spec, the plan, the tasks and the fixtures live in **[mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs)** (spec-anchored, GitHub Spec Kit):
 
-## Dónde está cada cosa
+- Constitution: [`.specify/memory/constitution.md`](https://github.com/Juanperezc/mottor-ai-specs/blob/main/.specify/memory/constitution.md)
+- Feature specs: [`specs/`](https://github.com/Juanperezc/mottor-ai-specs/tree/main/specs) (`spec.md`, `plan.md`, `tasks.md`, `fixtures/`)
 
-```text
-.specify/
-├── memory/constitution.md   # principios no negociables (SOLID, contrato, sin float, tests...)
-└── templates/               # plantillas oficiales de Spec Kit (spec, plan, tasks, checklist, constitution)
-specs/
-└── 001-quotes-mvp/          # Feature 1: Dashboard, Import, Quote Detail (estado: Draft)
-    ├── spec.md              # user stories + requisitos (compartida con mottor-ai-front)
-    ├── plan.md              # stack y arquitectura de este repo
-    ├── research.md          # decisiones técnicas y alternativas
-    ├── data-model.md        # modelo de datos de este repo
-    ├── quickstart.md        # cómo validar end-to-end
-    ├── contracts/openapi.yaml  # contrato de API (idéntico en mottor-ai-front)
-    └── tasks.md             # tareas numeradas con dependencias y [P]
+If a change alters behavior, update the spec in `mottor-ai-specs` **first**, then the code.
+
+## Tech stack
+
+| Area | Technology |
+|---|---|
+| Language | **PHP 8.5** (latest stable branch; 8.5.12 released 21 Oct 2026, [php.net](https://www.php.net/supported-versions.php)) |
+| Framework | **Laravel 13** (latest major; `laravel/framework` v13.39.0 released 27 Oct 2026, [Packagist](https://packagist.org/packages/laravel/framework)) |
+| Database | MySQL (`utf8mb4_0900_ai_ci` collation) |
+| Local environment | [Laravel Sail](https://laravel.com/docs/sail) (Docker) |
+| Queues | [Laravel Horizon](https://laravel.com/docs/horizon) + Redis |
+| WebSockets | [Laravel Reverb](https://laravel.com/docs/reverb) (import progress and errors pushed to the frontend) |
+| Persistence | Eloquent, **only** in persistence adapters. The domain (rules engine, money, ticket) is plain PHP with no framework dependencies |
+| Money | [`brick/math`](https://github.com/brick/math) exact decimals, rounding `HALF_UP` by default (configurable) |
+| Tests | PHPUnit 12 (Laravel 13 default) via `php artisan test` |
+| Coverage | PCOV or Xdebug, both shipped in the Sail PHP 8.5 image |
+| API docs | [Scramble](https://scramble.dedoc.co/) (`dedoc/scramble`): OpenAPI generated from code, Swagger UI at `/docs/api` |
+| Code style | Laravel Pint |
+
+## Quick start
+
+```bash
+git clone https://github.com/Juanperezc/mottor-ai-specs ../mottor-ai-specs   # default SPECS_PATH
+cp .env.example .env
+composer install                       # or the Sail one-off container, see Sail docs
+./vendor/bin/sail up -d                # app, MySQL, Redis
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan horizon      # queue workers (async import)
+./vendor/bin/sail artisan reverb:start # websocket server
 ```
 
-## Convenciones
+API docs: `http://localhost/docs/api`.
 
-- `spec.md` y `contracts/openapi.yaml` son **copias idénticas** en `mottor-ai-back` y `mottor-ai-front`. Si se cambian, se cambian en los dos repos en el mismo PR o ciclo.
-- `[NEEDS CLARIFICATION: ...]` marca supuestos pendientes. Todavía no tenemos el enunciado oficial del challenge.
-- Documentación en español; código, identificadores y OpenAPI en inglés.
-- En `tasks.md`, `[P]` significa paralelizable y `[USn]` es la user story.
+Tip: `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`.
 
-Para usar los comandos `/speckit-*` con un agente: `uv tool install specify-cli` y después `specify init --here` (conservando los archivos existentes).
+## API documentation
+
+This repo **owns the API contract**. The OpenAPI document is generated from the code (routes, FormRequests, API Resources) with [Scramble](https://scramble.dedoc.co/):
+
+- Swagger UI: `http://localhost/docs/api` (raw JSON at `/docs/api.json`).
+- Exported file: [`docs/api/openapi.json`](docs/api/openapi.json), regenerated with:
+
+  ```bash
+  ./vendor/bin/sail artisan scramble:export --path=docs/api/openapi.json
+  ```
+
+- Every PR that changes an endpoint regenerates and commits the export. The frontend generates its API types from this file.
+- Until Scramble is installed, [`docs/api/openapi.yaml`](docs/api/openapi.yaml) holds the hand-written draft moved from mottor-ai-specs. The first export replaces it.
+
+## Test coverage
+
+Run the tests with coverage inside Sail:
+
+```bash
+# PCOV (fast, coverage only)
+./vendor/bin/sail artisan test --coverage
+
+# Fail if total coverage drops below a threshold
+./vendor/bin/sail artisan test --coverage --min=80
+
+# Xdebug instead of PCOV
+SAIL_XDEBUG_MODE=coverage ./vendor/bin/sail artisan test --coverage
+
+# HTML and Clover reports
+./vendor/bin/sail php vendor/bin/phpunit --coverage-html coverage/html --coverage-clover coverage/clover.xml
+```
+
+Where to look:
+
+- Terminal: the per-file summary printed by `artisan test --coverage`.
+- HTML report: open `coverage/html/index.html`.
+- CI: `coverage/clover.xml` (uploaded as a build artifact).
+
+`coverage/` is a build output and must not be committed.
+
+### Current coverage
+
+There is no application code yet, so there is no coverage to report. This table is updated when tests exist.
+
+| Scope | Lines | Target |
+|---|---|---|
+| Domain (rules engine, money, ticket) | TBD | TBD |
+| HTTP API | TBD | TBD |
+| Total | TBD | TBD |
+
+## Git flow
+
+```text
+staging ──► feat/<scope>-<description> ──PR──► staging ──PR (release)──► main
+```
+
+- Branch from `staging`: `feat/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`.
+- PR to `staging` with green CI and review. Release with a PR from `staging` to `main`. No direct commits to `staging` or `main`.
+
+## Conventional Commits
+
+`<type>(<optional scope>): <imperative description>`. Types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `perf`, `build`, `ci`, `chore`, `revert`.
+
+```text
+feat(rules): add percentage discount strategy
+
+Spec: 001-quotes-mvp
+Tasks: T021, T023
+```
+
+## Referencing the spec in PRs
+
+Every PR body includes `Spec: <feature>` and `Tasks: T0xx, ...` (task IDs from `tasks.md` in mottor-ai-specs). After merging, tick the tasks `[x]` in mottor-ai-specs.

@@ -1,3 +1,6 @@
+# DRAFT: hand-written contract moved from mottor-ai-specs (specs/001-quotes-mvp/contracts/openapi.yaml).
+# It will be replaced by the Scramble export (php artisan scramble:export -> docs/api/openapi.json).
+# Do not treat it as final; it predates the latest spec decisions.
 openapi: 3.1.0
 info:
   title: Mottor AI API
