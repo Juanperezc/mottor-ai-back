@@ -1,8 +1,9 @@
 # mottor-ai-back
 
 [![Release](https://img.shields.io/badge/release-v0.1.0-blue)](https://github.com/Juanperezc/mottor-ai-back/releases)
-[![Tests](https://img.shields.io/badge/tests-66%20passed-brightgreen?logo=php&logoColor=white)](#tests-y-validación-del-dataset)
-[![Cobertura](https://img.shields.io/badge/coverage-94.8%25-brightgreen)](#tests-y-validación-del-dataset)
+[![CI](https://github.com/Juanperezc/mottor-ai-back/actions/workflows/ci.yml/badge.svg?branch=staging)](https://github.com/Juanperezc/mottor-ai-back/actions/workflows/ci.yml)
+[![Tests](https://github.com/Juanperezc/mottor-ai-back/raw/badges/tests.svg)](#ci)
+[![Cobertura](https://github.com/Juanperezc/mottor-ai-back/raw/badges/coverage.svg)](#ci)
 [![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
@@ -49,6 +50,7 @@ El enunciado es el HTML original, sin cambios. GitHub lo muestra como código: p
 - [Cómo agregar una regla](#cómo-agregar-una-regla)
 - [Type de regla desconocido](#type-de-regla-desconocido)
 - [El listado y su SQL](#el-listado-y-su-sql)
+- [CI](#ci)
 - [Tests y validación del dataset](#tests-y-validación-del-dataset)
 - [Qué quedó afuera](#qué-quedó-afuera)
 - [Cómo contribuir](#cómo-contribuir)
@@ -714,6 +716,15 @@ LIMIT ? OFFSET ?;
 - `utf8mb4_0900_ai_ci` hace que la búsqueda no distinga mayúsculas ni acentos (`norte` encuentra `Agencia Norte`).
 - `client` está indexado, pero un `LIKE '%x%'` con comodín al principio no puede usar un índice B-tree. Para 10.000 filas un scan alcanza; con más volumen, el paso siguiente sería un índice full-text o n-gram.
 - `total` es `null` cuando las tasas del presupuesto no permiten convertir a la moneda pedida. Por ejemplo, un presupuesto en EUR que solo guardó `EUR_ARS`, listado en USD.
+
+## CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) corre en cada PR y push a `staging` y `main`: Pint y PHPUnit con cobertura (PCOV), contra MySQL 8.4 y Redis como servicios.
+
+- El resumen de cobertura queda en el _summary_ de cada corrida y el reporte completo (HTML, más el XML) se sube como artifact.
+- En cada push a `staging` el workflow regenera `coverage.svg` y `tests.svg` y los commitea en la rama huérfana `badges` con el `GITHUB_TOKEN`, sin servicios ni secrets externos. Los de `main` quedan en `badges/main/`.
+- Como el repo es privado, los badges del encabezado (CI, tests y cobertura) solo se ven si tenés acceso al repo y sesión iniciada en GitHub.
+- Los PRs de release los abre el workflow con el `GITHUB_TOKEN`, y GitHub no dispara otros workflows desde ese token: el CI no corre solo en esos PRs (se puede lanzar a mano con _Run workflow_).
 
 ## Tests y validación del dataset
 
