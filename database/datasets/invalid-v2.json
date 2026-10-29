@@ -1,0 +1,3113 @@
+{
+  "version": "v2-invalid",
+  "generated_at": "2026-10-28",
+  "description": "Labeled invalid quotes. Each case must fail with exactly the expected errors.",
+  "count": 98,
+  "cases": [
+    {
+      "id": "missing-budget",
+      "title": "Budget object is required",
+      "expected_errors": [
+        {
+          "path": "budget",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "budget-not-object",
+      "title": "Budget must be an object",
+      "expected_errors": [
+        {
+          "path": "budget",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": [
+          1
+        ],
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-budget-id",
+      "title": "budget.id is required",
+      "expected_errors": [
+        {
+          "path": "budget.id",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "budget-id-not-string",
+      "title": "budget.id must be a string",
+      "expected_errors": [
+        {
+          "path": "budget.id",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": 418,
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "budget-id-blank",
+      "title": "budget.id cannot be blank",
+      "expected_errors": [
+        {
+          "path": "budget.id",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "   ",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-client",
+      "title": "budget.client is required",
+      "expected_errors": [
+        {
+          "path": "budget.client",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CLIENT",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "client-blank",
+      "title": "budget.client cannot be blank",
+      "expected_errors": [
+        {
+          "path": "budget.client",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CLIENT-BLANK",
+          "client": "   ",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-event",
+      "title": "budget.event is required",
+      "expected_errors": [
+        {
+          "path": "budget.event",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-EVENT",
+          "client": "Agencia Norte",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "event-blank",
+      "title": "budget.event cannot be blank",
+      "expected_errors": [
+        {
+          "path": "budget.event",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-EVENT-BLANK",
+          "client": "Agencia Norte",
+          "event": " ",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-items",
+      "title": "budget.items is required",
+      "expected_errors": [
+        {
+          "path": "budget.items",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEMS",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto"
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "items-not-array",
+      "title": "budget.items must be an array",
+      "expected_errors": [
+        {
+          "path": "budget.items",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEMS-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": "no"
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "items-null",
+      "title": "budget.items cannot be null",
+      "expected_errors": [
+        {
+          "path": "budget.items",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEMS-NULL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": null
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "empty-items",
+      "title": "A quote needs at least one item",
+      "expected_errors": [
+        {
+          "path": "budget.items",
+          "code": "empty_items"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEMS-EMPTY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": []
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-not-object",
+      "title": "Each item must be an object",
+      "expected_errors": [
+        {
+          "path": "budget.items.0",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            "bad"
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-item-id",
+      "title": "Item id is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.id",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-ID",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-id-not-integer",
+      "title": "Item id must be a positive integer",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.id",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-ID-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": "1",
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-id-not-positive",
+      "title": "Item id must be greater than zero",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.id",
+          "code": "invalid_item_id"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-ID-ZERO",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 0,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-description",
+      "title": "Item description is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.description",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-DESC",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "description-blank",
+      "title": "Item description cannot be blank",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.description",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-DESC-BLANK",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "  ",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-item-category",
+      "title": "Item category is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.category",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-category-blank",
+      "title": "Item category cannot be blank",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.category",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAT-BLANK",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": " ",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-quantity",
+      "title": "Item quantity is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-string",
+      "title": "Quantity must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": "10",
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-boolean",
+      "title": "Quantity cannot be a boolean",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-BOOL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": true,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-null",
+      "title": "Quantity cannot be null",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-NULL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": null,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-fractional",
+      "title": "Quantity must be a whole number of units",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_integer"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-FRAC",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2.5,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-negative",
+      "title": "Quantity cannot be negative",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_positive"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": -1,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "quantity-zero",
+      "title": "Quantity must be at least 1",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_positive"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-QTY-ZERO",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 0,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-unit-price",
+      "title": "unit_price is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PRICE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "price-string",
+      "title": "unit_price must be a JSON number, not text",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "price_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PRICE-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": "18000.00",
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "price-null",
+      "title": "unit_price cannot be null",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "price_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PRICE-NULL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": null,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "price-negative",
+      "title": "unit_price cannot be negative",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "price_negative"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PRICE-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": -1.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "price-three-decimals",
+      "title": "Money amounts have at most two decimal places",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "price_scale"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PRICE-SCALE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 10.125,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-item-currency",
+      "title": "Item currency is required",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.currency",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-CCY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-currency-unsupported",
+      "title": "Item currency outside ARS, USD and EUR",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.currency",
+          "code": "unsupported_currency",
+          "detail": "GBP"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-GBP",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "GBP"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "item-currency-lowercase",
+      "title": "Currency codes are uppercase ISO codes",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.currency",
+          "code": "unsupported_currency",
+          "detail": "usd"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ITEM-CASE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "usd"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-exchange-rates",
+      "title": "exchange_rates is required",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATES",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "exchange-rates-not-object",
+      "title": "exchange_rates must be an object, not an array",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATES-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": [],
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-quote-currency",
+      "title": "Output currency is required",
+      "expected_errors": [
+        {
+          "path": "currency",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CCY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "rules": []
+      }
+    },
+    {
+      "id": "quote-currency-blank",
+      "title": "Output currency cannot be blank",
+      "expected_errors": [
+        {
+          "path": "currency",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CCY-BLANK",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "",
+        "rules": []
+      }
+    },
+    {
+      "id": "quote-currency-unsupported",
+      "title": "Unsupported output currency is not also reported as a missing rate",
+      "expected_errors": [
+        {
+          "path": "currency",
+          "code": "unsupported_currency",
+          "detail": "GBP"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CCY-GBP",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "GBP",
+        "rules": []
+      }
+    },
+    {
+      "id": "quote-currency-not-string",
+      "title": "Output currency must be a string",
+      "expected_errors": [
+        {
+          "path": "currency",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CCY-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": 1,
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-rules",
+      "title": "rules is required and may be an empty array",
+      "expected_errors": [
+        {
+          "path": "rules",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULES",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS"
+      }
+    },
+    {
+      "id": "rules-not-array",
+      "title": "rules must be an array",
+      "expected_errors": [
+        {
+          "path": "rules",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULES-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": {
+          "type": "tax"
+        }
+      }
+    },
+    {
+      "id": "rule-not-object",
+      "title": "Each rule must be an object",
+      "expected_errors": [
+        {
+          "path": "rules.0",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULE-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "missing-rule-type",
+      "title": "Rule type is required",
+      "expected_errors": [
+        {
+          "path": "rules.0.type",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULE-MISSING-TYPE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "percent": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "rule-type-not-string",
+      "title": "Rule type must be a string",
+      "expected_errors": [
+        {
+          "path": "rules.0.type",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULE-TYPE-NUM",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "unknown-rule-type",
+      "title": "percentage_surcharge is not one of the six challenge rule types",
+      "expected_errors": [
+        {
+          "path": "rules.0.type",
+          "code": "unknown_rule_type",
+          "detail": "percentage_surcharge"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULE-UNKNOWN",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_surcharge",
+            "percent": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "unknown-rule-type-fixed-fee",
+      "title": "fixed_fee is not one of the six challenge rule types",
+      "expected_errors": [
+        {
+          "path": "rules.0.type",
+          "code": "unknown_rule_type",
+          "detail": "fixed_fee"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RULE-UNKNOWN-FEE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_fee",
+            "amount": 10.00
+          }
+        ]
+      }
+    },
+    {
+      "id": "malformed-pair-lowercase",
+      "title": "Pair keys are uppercase BASE_QUOTE",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.usd_ars",
+          "code": "malformed_pair_key"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-LOWER",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "usd_ars": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "malformed-pair-dash",
+      "title": "Pair keys use an underscore separator",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD-ARS",
+          "code": "malformed_pair_key"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-DASH",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD-ARS": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "malformed-pair-compact",
+      "title": "Pair keys need a separator",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USDARS",
+          "code": "malformed_pair_key"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-COMPACT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USDARS": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "malformed-pair-short",
+      "title": "Each side of a pair is a 3-letter code",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.US_ARS",
+          "code": "malformed_pair_key"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-SHORT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "US_ARS": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "malformed-pair-long",
+      "title": "A pair key has exactly two codes",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS_EUR",
+          "code": "malformed_pair_key"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-LONG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS_EUR": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "invalid-pair-same-currency",
+      "title": "A pair must join two different currencies",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_USD",
+          "code": "invalid_pair",
+          "detail": "USD_USD"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-SAME",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_USD": 1.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "unsupported-pair-currency",
+      "title": "Both sides of a pair must be supported currencies",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.GBP_ARS",
+          "code": "unsupported_currency",
+          "detail": "GBP"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAIR-GBP",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "GBP_ARS": 1800.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "rate-zero",
+      "title": "An exchange rate of zero is rejected",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "rate_not_positive"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATE-ZERO",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": 0
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "rate-negative",
+      "title": "A negative exchange rate is rejected",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "rate_not_positive"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATE-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": -1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "rate-string",
+      "title": "An exchange rate must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATE-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": "1450.00"
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "rate-null",
+      "title": "An exchange rate cannot be null",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATE-NULL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": null
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "rate-boolean",
+      "title": "An exchange rate cannot be a boolean",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-RATE-BOOL",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": true
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-rate-empty",
+      "title": "USD item priced in ARS with an empty rate object",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_ARS"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-MISSING-EMPTY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-rate-unrelated-pair",
+      "title": "A present but unrelated pair does not cover the item",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_ARS"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-MISSING-OTHER",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "EUR_ARS": 1562.10
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-rate-no-triangulation",
+      "title": "USD to EUR is not implied by USD_ARS and EUR_ARS",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_EUR"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-NO-TRIANGLE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": 1450.00,
+          "EUR_ARS": 1562.10
+        },
+        "currency": "EUR",
+        "rules": []
+      }
+    },
+    {
+      "id": "missing-rate-fixed-discount",
+      "title": "A fixed discount in another currency needs a pair",
+      "expected_errors": [
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_ARS"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-FIXED-RATE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": 100.00,
+            "currency": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "malformed-key-does-not-satisfy-rate",
+      "title": "A malformed key is not a usable USD_ARS rate",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.usd_ars",
+          "code": "malformed_pair_key"
+        },
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_ARS"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BAD-KEY-RATE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "usd_ars": 1450.00
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "zero-rate-does-not-satisfy",
+      "title": "A zero rate does not satisfy the required pair",
+      "expected_errors": [
+        {
+          "path": "exchange_rates.USD_ARS",
+          "code": "rate_not_positive"
+        },
+        {
+          "path": "exchange_rates",
+          "code": "missing_rate",
+          "detail": "USD_ARS"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-ZERO-UNUSABLE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "USD"
+            }
+          ]
+        },
+        "exchange_rates": {
+          "USD_ARS": 0
+        },
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "percent-negative",
+      "title": "A percentage cannot be negative",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "percent_out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PERCENT-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_discount",
+            "percent": -5
+          }
+        ]
+      }
+    },
+    {
+      "id": "percent-over-100",
+      "title": "A percentage cannot exceed 100",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "percent_out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PERCENT-HIGH",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_discount",
+            "percent": 150
+          }
+        ]
+      }
+    },
+    {
+      "id": "percent-string",
+      "title": "A percentage must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "percent_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PERCENT-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_discount",
+            "percent": "15"
+          }
+        ]
+      }
+    },
+    {
+      "id": "percent-three-decimals",
+      "title": "Percentages have at most two decimal places",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "percent_scale"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PERCENT-SCALE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_discount",
+            "percent": 10.125
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-percent",
+      "title": "percentage_discount requires percent",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PERCENT-MISSING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "percentage_discount"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-category-discount-percent",
+      "title": "category_discount requires percent",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAT-PERCENT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "category_discount",
+            "category": "catering"
+          }
+        ]
+      }
+    },
+    {
+      "id": "max-percent-negative",
+      "title": "discount_cap max_percent cannot be negative",
+      "expected_errors": [
+        {
+          "path": "rules.0.max_percent",
+          "code": "percent_out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAP-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "discount_cap",
+            "max_percent": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "max-percent-over-100",
+      "title": "discount_cap max_percent cannot exceed 100",
+      "expected_errors": [
+        {
+          "path": "rules.0.max_percent",
+          "code": "percent_out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAP-HIGH",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "discount_cap",
+            "max_percent": 101
+          }
+        ]
+      }
+    },
+    {
+      "id": "max-percent-string",
+      "title": "max_percent must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "rules.0.max_percent",
+          "code": "percent_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAP-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "discount_cap",
+            "max_percent": "20"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-max-percent",
+      "title": "discount_cap requires max_percent",
+      "expected_errors": [
+        {
+          "path": "rules.0.max_percent",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-CAP-MISSING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "discount_cap"
+          }
+        ]
+      }
+    },
+    {
+      "id": "buy-pay-equal",
+      "title": "pay must be lower than buy",
+      "expected_errors": [
+        {
+          "path": "rules.0",
+          "code": "buy_pay_invalid",
+          "detail": "out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BUY-PAY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": 2,
+            "pay": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "buy-zero",
+      "title": "buy must be at least 1",
+      "expected_errors": [
+        {
+          "path": "rules.0",
+          "code": "buy_pay_invalid",
+          "detail": "out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BUY-ZERO",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": 0,
+            "pay": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "pay-negative",
+      "title": "pay cannot be negative",
+      "expected_errors": [
+        {
+          "path": "rules.0",
+          "code": "buy_pay_invalid",
+          "detail": "out_of_range"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAY-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": 3,
+            "pay": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "buy-fractional",
+      "title": "buy and pay are whole numbers",
+      "expected_errors": [
+        {
+          "path": "rules.0.buy",
+          "code": "buy_pay_invalid",
+          "detail": "not_integer"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BUY-FRAC",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": 3.5,
+            "pay": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "buy-string",
+      "title": "buy must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "rules.0.buy",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BUY-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": "3",
+            "pay": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-buy",
+      "title": "quantity_promo requires buy",
+      "expected_errors": [
+        {
+          "path": "rules.0.buy",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-BUY-MISSING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "pay": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-pay",
+      "title": "quantity_promo requires pay",
+      "expected_errors": [
+        {
+          "path": "rules.0.pay",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PAY-MISSING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "category": "mobiliario",
+            "buy": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-promo-category",
+      "title": "quantity_promo requires category",
+      "expected_errors": [
+        {
+          "path": "rules.0.category",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-PROMO-CAT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "quantity_promo",
+            "buy": 3,
+            "pay": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-discount-category",
+      "title": "category_discount requires category",
+      "expected_errors": [
+        {
+          "path": "rules.0.category",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-DISC-CAT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "category_discount",
+            "percent": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-amount-negative",
+      "title": "A fixed discount amount cannot be negative",
+      "expected_errors": [
+        {
+          "path": "rules.0.amount",
+          "code": "amount_negative"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-AMOUNT-NEG",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": -50.00,
+            "currency": "ARS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-amount-string",
+      "title": "A fixed discount amount must be a JSON number",
+      "expected_errors": [
+        {
+          "path": "rules.0.amount",
+          "code": "amount_not_numeric"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-AMOUNT-STRING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": "50.00",
+            "currency": "ARS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-amount-three-decimals",
+      "title": "A fixed discount amount has at most two decimal places",
+      "expected_errors": [
+        {
+          "path": "rules.0.amount",
+          "code": "amount_scale"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-AMOUNT-SCALE",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": 10.125,
+            "currency": "ARS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-fixed-amount",
+      "title": "fixed_discount requires amount",
+      "expected_errors": [
+        {
+          "path": "rules.0.amount",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-AMOUNT-MISSING",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "currency": "ARS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-fixed-currency",
+      "title": "fixed_discount requires currency",
+      "expected_errors": [
+        {
+          "path": "rules.0.currency",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-FIXED-CCY",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": 50.00
+          }
+        ]
+      }
+    },
+    {
+      "id": "fixed-currency-unsupported",
+      "title": "Fixed discount currency outside ARS, USD and EUR",
+      "expected_errors": [
+        {
+          "path": "rules.0.currency",
+          "code": "unsupported_currency",
+          "detail": "GBP"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-FIXED-GBP",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "fixed_discount",
+            "amount": 50.00,
+            "currency": "GBP"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-tax-name",
+      "title": "tax requires name",
+      "expected_errors": [
+        {
+          "path": "rules.0.name",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-TAX-NAME",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "tax",
+            "percent": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "tax-name-blank",
+      "title": "tax name cannot be blank",
+      "expected_errors": [
+        {
+          "path": "rules.0.name",
+          "code": "blank"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-TAX-NAME-BLANK",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "tax",
+            "name": "  ",
+            "percent": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-tax-percent",
+      "title": "tax requires percent",
+      "expected_errors": [
+        {
+          "path": "rules.0.percent",
+          "code": "required"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-TAX-PERCENT",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "tax",
+            "name": "IVA"
+          }
+        ]
+      }
+    },
+    {
+      "id": "second-item-quantity-negative",
+      "title": "A later item can be the one that fails",
+      "expected_errors": [
+        {
+          "path": "budget.items.1.quantity",
+          "code": "quantity_not_positive"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-SECOND",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": 2,
+              "unit_price": 18000.00,
+              "currency": "ARS"
+            },
+            {
+              "id": 2,
+              "description": "Silla tiffany",
+              "category": "mobiliario",
+              "quantity": -3,
+              "unit_price": 1800.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": []
+      }
+    },
+    {
+      "id": "multi-error-quantity-price-and-unknown-rule",
+      "title": "Independent errors on the same quote are all reported",
+      "expected_errors": [
+        {
+          "path": "budget.items.0.quantity",
+          "code": "quantity_not_positive"
+        },
+        {
+          "path": "budget.items.0.unit_price",
+          "code": "price_negative"
+        },
+        {
+          "path": "rules.0.type",
+          "code": "unknown_rule_type",
+          "detail": "nope"
+        }
+      ],
+      "quote": {
+        "budget": {
+          "id": "PRE-ERR-MULTI",
+          "client": "Agencia Norte",
+          "event": "Lanzamiento de producto",
+          "items": [
+            {
+              "id": 1,
+              "description": "Menu de tres pasos",
+              "category": "catering",
+              "quantity": -1,
+              "unit_price": -5.00,
+              "currency": "ARS"
+            }
+          ]
+        },
+        "exchange_rates": {},
+        "currency": "ARS",
+        "rules": [
+          {
+            "type": "nope"
+          }
+        ]
+      }
+    },
+    {
+      "id": "quote-not-object",
+      "title": "The quote itself must be an object",
+      "expected_errors": [
+        {
+          "path": "quote",
+          "code": "invalid_type"
+        }
+      ],
+      "quote": [
+        1,
+        2
+      ]
+    }
+  ]
+}

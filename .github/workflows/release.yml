@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release-pr:
+    name: Open or update the release PR
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run release-pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/release-pr.sh --repo "$GITHUB_REPOSITORY"
+
+  release-tag:
+    name: Tag and publish the release
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref == 'staging' &&
+      contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Run release-tag.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: ./scripts/release-tag.sh "$PR_NUMBER" --repo "$GITHUB_REPOSITORY"
+      - name: Sync staging with main (fast-forward only)
+        run: |
+          git fetch --quiet origin main staging
+          if git merge-base --is-ancestor origin/staging origin/main; then
+            if git push origin origin/main:refs/heads/staging; then
+              echo "staging fast-forwarded to main."
+            else
+              echo "::warning::Could not push main into staging; sync it manually."
+            fi
+          else
+            echo "::warning::staging has commits that are not in main; not a fast-forward, staging was left untouched. Merge main into staging manually so the tags stay reachable."
+          fi
