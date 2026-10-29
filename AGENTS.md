@@ -1,45 +1,45 @@
 # AGENTS.md
 
-Mandatory rules for any AI agent or person working on `mottor-ai-back`. Follow them on every task.
+Reglas obligatorias para cualquier agente de IA o persona que trabaje en `mottor-ai-back`. Deben cumplirse en todas las tareas.
 
-## Source of truth: mottor-ai-specs
+## Fuente de verdad: mottor-ai-specs
 
-1. **Read the specs before any task.** Open [mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs) and read:
-   - the constitution: `.specify/memory/constitution.md`;
-   - the feature spec in `specs/<feature>/`: `spec.md`, `plan.md`, `tasks.md` and `fixtures/`.
-2. **No spec, no code.** Do not write code unless a spec requirement and a task in `tasks.md` back it.
-3. **The spec wins.** If code and spec disagree, the spec is right. Stop, and propose the change as a PR to `mottor-ai-specs`. Change code only after the spec is updated.
-4. **Never create specs here.** No `spec.md`, `plan.md`, `tasks.md` or `fixtures/` in this repo. Specs live only in `mottor-ai-specs`.
-5. **This repo owns the API contract.** The OpenAPI is generated from code with Scramble (Swagger UI at `/docs/api`) and exported to `docs/api/openapi.json`. Every endpoint change updates the code **and** regenerates the export (`./vendor/bin/sail artisan scramble:export`) in the same PR. Endpoint behavior still comes from the spec: never add, rename or drop fields without a spec requirement.
+1. **Leer las specs antes de cada tarea.** Abrir [mottor-ai-specs](https://github.com/Juanperezc/mottor-ai-specs) y leer:
+   - la constitución: `.specify/memory/constitution.md`;
+   - la spec de la feature en `specs/<feature>/`: `spec.md`, `plan.md` y `tasks.md`.
+2. **Sin spec no hay código.** No escribir código si no existe un requisito de la spec y una tarea de `tasks.md` que lo respalden.
+3. **La spec prevalece.** Si el código y la spec difieren, la spec es correcta. Detenerse y proponer el cambio como PR a `mottor-ai-specs`. Cambiar el código solo después de actualizar la spec.
+4. **Fixtures del back.** Los archivos de fixture del backend viven y se mantienen en `tests/Fixtures/`. No leer fixtures desde el repositorio de specs ni crear una carpeta `tests/fixtures/` con distinto casing.
+5. **Este repositorio es dueño del contrato de la API.** El OpenAPI se genera desde el código con Scramble (Swagger UI en `/docs/api`) y se exporta a `docs/api/openapi.json`. Cada cambio de endpoint actualiza el código **y** regenera el export (`./vendor/bin/sail artisan scramble:export`) en el mismo PR. El comportamiento del endpoint sigue viniendo de la spec: nunca agregar, renombrar ni eliminar campos sin un requisito.
 
-## Git workflow
+## Flujo de Git
 
-6. Branch from `staging`: `feat/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`.
-7. Use [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <imperative summary>`.
-8. Open the PR to `staging`. Release with a PR from `staging` to `main`. Never push directly to `staging` or `main`.
-9. Every PR body references the spec and the tasks it implements:
+6. Crear ramas desde `staging`: `feat/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`.
+7. Usar [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <imperative summary>`.
+8. Abrir el PR hacia `staging`. Liberar mediante un PR de `staging` a `main`. Nunca hacer push directo a `staging` ni a `main`.
+9. El cuerpo de cada PR referencia la spec y las tareas que implementa:
 
    ```text
    Spec: 001-quotes-mvp
-   Tasks: T021, T023
+   Tasks: BT-21, BT-23
    ```
 
-   Docs or chores with no spec use `Spec: N/A (docs)` and `Tasks: N/A`.
+   Para documentación o mantenimiento sin spec, usar `Spec: N/A (docs)` y `Tasks: N/A`.
 
-## Language
+## Idioma
 
-10. Code, identifiers, comments, commits and docs in this repo: **English**.
-11. Specs in `mottor-ai-specs`: **Spanish**.
+10. El código, los identificadores, los comentarios y los commits de este repositorio se escriben en **inglés**. Los commits siguen Conventional Commits.
+11. El README y la documentación de este repositorio se escriben en **español**. Las specs de `mottor-ai-specs` también se escriben en **español**.
 
-## Quality
+## Calidad
 
-12. Keep tests green. Add or update tests with every behavior change, using the spec fixtures as test cases.
-13. Do not lower test coverage. Run the coverage command in `README.md` before opening a PR.
-14. If you are unsure, stop and ask. Do not guess requirements.
+12. Mantener los tests en verde. Agregar o actualizar tests con cada cambio de comportamiento usando las fixtures de la spec como casos de prueba.
+13. No reducir la cobertura. Ejecutar el comando de cobertura del README antes de abrir un PR.
+14. Ante una duda, detenerse y preguntar. No inventar requisitos.
 
-## Backend specifics
+## Reglas específicas del backend
 
-15. Keep the domain (rules engine, money, ticket) in plain PHP. No Laravel or Eloquent classes in the domain.
-16. Use Eloquent only in persistence adapters.
-17. Never use `float` for money. Use `brick/math` with the rounding mode from config.
-18. Run everything through Sail: `./vendor/bin/sail artisan test --coverage`.
+15. Mantener el dominio (motor de reglas, dinero y ticket) en PHP puro. No usar clases de Laravel ni Eloquent en el dominio.
+16. Usar Eloquent únicamente en los adaptadores de persistencia.
+17. Nunca usar `float` para dinero. Usar `brick/math` con el modo de redondeo configurado.
+18. Ejecutar todo mediante Sail: `./vendor/bin/sail artisan test --coverage`.
