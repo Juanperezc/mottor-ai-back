@@ -168,6 +168,11 @@ Para probar la importación desde el front, hay datasets chicos con el mismo for
 - Swagger UI: `http://localhost:8000/docs/api`
 - OpenAPI en JSON: `http://localhost:8000/docs/api.json`
 - Rutas documentadas: `health`, `quotes` e `imports` (`config/scramble.php`).
+- Solo está disponible en el entorno local: en el deploy (`https://mottor.tulinkfacil.com/docs/api`) responde `403`.
+
+![Documentación de la API generada con Scramble (local): esquema StoreImportRequest](docs/images/api-docs-scramble.png)
+
+_Documentación de la API generada con Scramble (local), vista del esquema `StoreImportRequest`._
 
 Las respuestas se construyen con `QuoteResource`, `QuoteSummaryResource`, `QuoteBatchResource` e `ImportResource`. Scramble documenta los recursos y sus formas con atributos `#[Response]` en `QuoteController` e `ImportController`. Después de cualquier cambio en la API, regenerá el contrato versionado:
 
