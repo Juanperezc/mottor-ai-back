@@ -1,5 +1,14 @@
 # mottor-ai-back
 
+[![Release](https://img.shields.io/badge/release-v0.1.0-blue)](https://github.com/Juanperezc/mottor-ai-back/releases)
+[![CI](https://github.com/Juanperezc/mottor-ai-back/actions/workflows/ci.yml/badge.svg?branch=staging)](https://github.com/Juanperezc/mottor-ai-back/actions/workflows/ci.yml)
+[![Tests](https://github.com/Juanperezc/mottor-ai-back/raw/badges/tests.svg)](#ci)
+[![Cobertura](https://github.com/Juanperezc/mottor-ai-back/raw/badges/coverage.svg)](#ci)
+[![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Demo API](https://img.shields.io/badge/demo-mottor.tulinkfacil.com-0A0A0A)](https://mottor.tulinkfacil.com/)
+
 API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupuestos de eventos (quotes) con un pipeline ordenado de reglas comerciales y guarda el resultado con su desglose completo. También lista el histórico en cualquier moneda e importa el dataset de 10.000 presupuestos, de forma síncrona o mediante una cola con progreso en vivo.
 
 | Capa | Elección |
@@ -14,8 +23,20 @@ API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupu
 | Tests | PHPUnit 12 con `php artisan test` |
 | Estilo | Laravel Pint |
 
+## Demo y enunciado
+
+| Qué | Dónde |
+| --- | --- |
+| API (este repo) | https://mottor.tulinkfacil.com/ |
+| Front ([`mottor-ai-front`](https://github.com/Juanperezc/mottor-ai-front)) | https://mottor-ai-front.vercel.app/ (la app arranca en [`/quotes`](https://mottor-ai-front.vercel.app/quotes)) |
+| Enunciado del challenge | [`docs/enunciado.html`](docs/enunciado.html) (_Mottor.ai Senior Full-Stack Challenge_: "Calculadora de presupuestos con reglas comerciales") |
+| Specs (SDD) | [`mottor-ai-specs`](https://github.com/Juanperezc/mottor-ai-specs) |
+
+El enunciado es el HTML original, sin cambios. GitHub lo muestra como código: para leerlo con formato, descargalo y abrilo en el navegador. La API no tiene prefijo `/api`: los endpoints cuelgan de la raíz (por ejemplo, `GET /health` y `GET /quotes`).
+
 ## Contenido
 
+- [Demo y enunciado](#demo-y-enunciado)
 - [Estructura de la entrega](#estructura-de-la-entrega)
 - [Fuente de verdad](#fuente-de-verdad)
 - [Cómo correrlo con Sail](#cómo-correrlo-con-sail)
@@ -29,6 +50,7 @@ API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupu
 - [Cómo agregar una regla](#cómo-agregar-una-regla)
 - [Type de regla desconocido](#type-de-regla-desconocido)
 - [El listado y su SQL](#el-listado-y-su-sql)
+- [CI](#ci)
 - [Tests y validación del dataset](#tests-y-validación-del-dataset)
 - [Qué quedó afuera](#qué-quedó-afuera)
 - [Cómo contribuir](#cómo-contribuir)
@@ -36,7 +58,7 @@ API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupu
 
 ## Estructura de la entrega
 
-El enunciado pide un único repositorio con las carpetas `api/` y `web/`. Por decisión de Juan ([ADR-00](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)), el proyecto se entrega en dos repositorios separados:
+El [enunciado](docs/enunciado.html) pide un único repositorio con las carpetas `api/` y `web/`. Por decisión de Juan ([ADR-00](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)), el proyecto se entrega en dos repositorios separados:
 
 - **Back (este repositorio):** [`mottor-ai-back`](https://github.com/Juanperezc/mottor-ai-back), la API en Laravel.
 - **Front:** [`mottor-ai-front`](https://github.com/Juanperezc/mottor-ai-front), la aplicación en React.
@@ -53,7 +75,7 @@ Este repositorio sigue Spec-Driven Development. La constitución, la especificac
 - [Plan, modelo de datos y endpoints](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/plan.md) y [tareas del back (BT-xx)](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/tasks.md)
 - [Decisiones de arquitectura (ADR)](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)
 
-Si el código y el enunciado contradicen las specs, prevalecen el enunciado y las decisiones de arquitectura registradas, y la spec se actualiza primero.
+Si el código y el [enunciado](docs/enunciado.html) contradicen las specs, prevalecen el enunciado y las decisiones de arquitectura registradas, y la spec se actualiza primero.
 
 El contrato de la API se genera desde el código con Scramble y se versiona en [`docs/api/openapi.json`](docs/api/openapi.json).
 
@@ -148,6 +170,11 @@ Para probar la importación desde el front, hay datasets chicos con el mismo for
 - Swagger UI: `http://localhost:8000/docs/api`
 - OpenAPI en JSON: `http://localhost:8000/docs/api.json`
 - Rutas documentadas: `health`, `quotes` e `imports` (`config/scramble.php`).
+- Solo está disponible en el entorno local: en el deploy (`https://mottor.tulinkfacil.com/docs/api`) responde `403`.
+
+![Documentación de la API generada con Scramble (local): esquema StoreImportRequest](docs/images/api-docs-scramble.png)
+
+_Documentación de la API generada con Scramble (local), vista del esquema `StoreImportRequest`._
 
 Las respuestas se construyen con `QuoteResource`, `QuoteSummaryResource`, `QuoteBatchResource` e `ImportResource`. Scramble documenta los recursos y sus formas con atributos `#[Response]` en `QuoteController` e `ImportController`. Después de cualquier cambio en la API, regenerá el contrato versionado:
 
@@ -689,6 +716,15 @@ LIMIT ? OFFSET ?;
 - `utf8mb4_0900_ai_ci` hace que la búsqueda no distinga mayúsculas ni acentos (`norte` encuentra `Agencia Norte`).
 - `client` está indexado, pero un `LIKE '%x%'` con comodín al principio no puede usar un índice B-tree. Para 10.000 filas un scan alcanza; con más volumen, el paso siguiente sería un índice full-text o n-gram.
 - `total` es `null` cuando las tasas del presupuesto no permiten convertir a la moneda pedida. Por ejemplo, un presupuesto en EUR que solo guardó `EUR_ARS`, listado en USD.
+
+## CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) corre en cada PR y push a `staging` y `main`: Pint y PHPUnit con cobertura (PCOV), contra MySQL 8.4 y Redis como servicios.
+
+- El resumen de cobertura queda en el _summary_ de cada corrida y el reporte completo (HTML, más el XML) se sube como artifact.
+- En cada push a `staging` el workflow regenera `coverage.svg` y `tests.svg` y los commitea en la rama huérfana `badges` con el `GITHUB_TOKEN`, sin servicios ni secrets externos. Los de `main` quedan en `badges/main/`.
+- Como el repo es privado, los badges del encabezado (CI, tests y cobertura) solo se ven si tenés acceso al repo y sesión iniciada en GitHub.
+- Los PRs de release los abre el workflow con el `GITHUB_TOKEN`, y GitHub no dispara otros workflows desde ese token: el CI no corre solo en esos PRs (se puede lanzar a mano con _Run workflow_).
 
 ## Tests y validación del dataset
 
