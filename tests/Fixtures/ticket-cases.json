@@ -1,0 +1,144 @@
+{
+  "width": 28,
+  "max_lines": 4,
+  "unit": "unicode code point",
+  "cases": [
+    {
+      "id": "enunciado-1",
+      "text": "Reunión anual de accionistas · Auditorio Norte",
+      "lines": [
+        "Reunión anual de accionistas",
+        "· Auditorio Norte"
+      ]
+    },
+    {
+      "id": "enunciado-2",
+      "text": "Fiesta corporativa de fin de año para toda la planta con cena de gala y show en vivo en el salón principal de Pilar Norte",
+      "lines": [
+        "Fiesta corporativa de fin de",
+        "año para toda la planta con",
+        "cena de gala y show en vivo",
+        "en el salón principal de…"
+      ]
+    },
+    {
+      "id": "enunciado-3",
+      "text": "Pantalla LED 6×3 m con operador técnico",
+      "lines": [
+        "Pantalla LED 6×3 m con",
+        "operador técnico"
+      ]
+    },
+    {
+      "id": "evento-caso-oficial",
+      "text": "Lanzamiento de producto · 120 personas",
+      "lines": [
+        "Lanzamiento de producto ·",
+        "120 personas"
+      ]
+    },
+    {
+      "id": "vacio",
+      "text": "",
+      "lines": []
+    },
+    {
+      "id": "solo-blancos",
+      "text": "   \t \n  ",
+      "lines": []
+    },
+    {
+      "id": "blancos-multiples",
+      "text": "  Menú    de\ttres \n pasos  ",
+      "lines": [
+        "Menú de tres pasos"
+      ]
+    },
+    {
+      "id": "palabra-de-28",
+      "text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "lines": [
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      ]
+    },
+    {
+      "id": "29-letras-y-palabra-corta",
+      "text": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBB fin",
+      "lines": [
+        "BBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "B fin"
+      ]
+    },
+    {
+      "id": "112-letras-sin-espacios",
+      "text": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+      "lines": [
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+      ]
+    },
+    {
+      "id": "113-letras-sin-espacios",
+      "text": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+      "lines": [
+        "DDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+        "DDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+        "DDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+        "DDDDDDDDDDDDDDDDDDDDDDDDDDD…"
+      ]
+    },
+    {
+      "id": "linea-parcial-y-palabra-larga",
+      "text": "Hola EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE chau",
+      "lines": [
+        "Hola",
+        "EEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+        "EE chau"
+      ]
+    },
+    {
+      "id": "elipsis-con-rtrim",
+      "text": "aaaa bbbb cccc dddd eeee fff aaaa bbbb cccc dddd eeee fff gggggggggg hhhhhhhhhhhhhhhh iiiiiiiii jjjjjjjjjjjjjjjjjjjjj kkk kkk kkk kkk kkk kkk",
+      "lines": [
+        "aaaa bbbb cccc dddd eeee fff",
+        "aaaa bbbb cccc dddd eeee fff",
+        "gggggggggg hhhhhhhhhhhhhhhh",
+        "iiiiiiiii…"
+      ]
+    },
+    {
+      "id": "acentos-precompuestos",
+      "text": "Ñandú cañón acción pingüino espectáculo único",
+      "lines": [
+        "Ñandú cañón acción pingüino",
+        "espectáculo único"
+      ]
+    },
+    {
+      "id": "combinante-separado-de-su-letra",
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaé",
+      "lines": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaae",
+        "́"
+      ]
+    },
+    {
+      "id": "combinante-cuenta-como-un-caracter",
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaé fin",
+      "lines": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "é fin"
+      ]
+    },
+    {
+      "id": "emoji-29-code-points",
+      "text": "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉",
+      "lines": [
+        "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉",
+        "🎉"
+      ]
+    }
+  ]
+}
