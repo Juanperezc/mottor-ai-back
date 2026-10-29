@@ -14,8 +14,20 @@ API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupu
 | Tests | PHPUnit 12 con `php artisan test` |
 | Estilo | Laravel Pint |
 
+## Demo y enunciado
+
+| Qué | Dónde |
+| --- | --- |
+| API (este repo) | https://mottor.tulinkfacil.com/ |
+| Front ([`mottor-ai-front`](https://github.com/Juanperezc/mottor-ai-front)) | https://mottor-ai-front.vercel.app/ (la app arranca en [`/quotes`](https://mottor-ai-front.vercel.app/quotes)) |
+| Enunciado del challenge | [`docs/enunciado.html`](docs/enunciado.html) (_Mottor.ai Senior Full-Stack Challenge_: "Calculadora de presupuestos con reglas comerciales") |
+| Specs (SDD) | [`mottor-ai-specs`](https://github.com/Juanperezc/mottor-ai-specs) |
+
+El enunciado es el HTML original, sin cambios. GitHub lo muestra como código: para leerlo con formato, descargalo y abrilo en el navegador. La API no tiene prefijo `/api`: los endpoints cuelgan de la raíz (por ejemplo, `GET /health` y `GET /quotes`).
+
 ## Contenido
 
+- [Demo y enunciado](#demo-y-enunciado)
 - [Estructura de la entrega](#estructura-de-la-entrega)
 - [Fuente de verdad](#fuente-de-verdad)
 - [Cómo correrlo con Sail](#cómo-correrlo-con-sail)
@@ -36,7 +48,7 @@ API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupu
 
 ## Estructura de la entrega
 
-El enunciado pide un único repositorio con las carpetas `api/` y `web/`. Por decisión de Juan ([ADR-00](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)), el proyecto se entrega en dos repositorios separados:
+El [enunciado](docs/enunciado.html) pide un único repositorio con las carpetas `api/` y `web/`. Por decisión de Juan ([ADR-00](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)), el proyecto se entrega en dos repositorios separados:
 
 - **Back (este repositorio):** [`mottor-ai-back`](https://github.com/Juanperezc/mottor-ai-back), la API en Laravel.
 - **Front:** [`mottor-ai-front`](https://github.com/Juanperezc/mottor-ai-front), la aplicación en React.
@@ -53,7 +65,7 @@ Este repositorio sigue Spec-Driven Development. La constitución, la especificac
 - [Plan, modelo de datos y endpoints](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/plan.md) y [tareas del back (BT-xx)](https://github.com/Juanperezc/mottor-ai-specs/blob/main/specs/001-quotes-mvp/tasks.md)
 - [Decisiones de arquitectura (ADR)](https://github.com/Juanperezc/mottor-ai-specs/blob/main/docs/decisions.md)
 
-Si el código y el enunciado contradicen las specs, prevalecen el enunciado y las decisiones de arquitectura registradas, y la spec se actualiza primero.
+Si el código y el [enunciado](docs/enunciado.html) contradicen las specs, prevalecen el enunciado y las decisiones de arquitectura registradas, y la spec se actualiza primero.
 
 El contrato de la API se genera desde el código con Scramble y se versiona en [`docs/api/openapi.json`](docs/api/openapi.json).
 

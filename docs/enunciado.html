@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mottor.ai — Challenge técnico · Calculadora de presupuestos con reglas comerciales</title>
+<style>
+  :root {
+    --bg: #FFFFFF; --bg-2: #FAFAFB; --bg-3: #F4F4F5; --black: #0A0A0B;
+    --ink: #1A1A1C; --ink-2: #3C3C40; --ink-3: #6E6E73; --ink-4: #A1A1A6;
+    --line: #E8E8EA; --line-soft: #F2F2F4;
+    --cyan: #2BB4FF; --purple: #8A4DFF; --magenta: #FF2DC0; --green: #1D9E75; --red: #D93838;
+    --gradient: linear-gradient(90deg, var(--cyan) 0%, var(--purple) 50%, var(--magenta) 100%);
+    --sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+    --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --max: 1040px; --gutter: clamp(20px, 4vw, 56px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  b, strong { font-weight: 600; }
+  code { font-family: var(--mono); font-size: .88em; background: var(--bg-3); border-radius: 4px; padding: 1px 6px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 18px; overflow-x: auto; margin: 12px 0 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .strip { background: var(--black); color: #fff; font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+  .strip .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; }
+  .strip .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-right: 8px; vertical-align: middle; }
+  .strip a { color: #fff; text-decoration: none; opacity: .85; }
+  nav { border-bottom: 1px solid var(--line); background: #fff; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 19px; letter-spacing: -.02em; text-decoration: none; }
+  .logo svg { width: 22px; height: 22px; }
+  nav .r { font-size: 13.5px; color: var(--ink-2); display: flex; gap: 20px; }
+  nav .r a { text-decoration: none; }
+  .hero { padding: 56px 0 36px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+  .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+  .hero h1 { font-size: 32px; line-height: 1.2; font-weight: 500; letter-spacing: -.025em; margin: 18px 0 14px; max-width: 760px; }
+  .hero h1 .grad { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero .lead { font-size: 17px; color: var(--ink-2); max-width: 720px; margin: 0; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; margin-top: 28px; }
+  .facts div { background: #fff; padding: 14px 16px; }
+  .facts .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .facts .v { font-size: 15px; font-weight: 500; margin-top: 4px; }
+  @media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; } }
+  section { padding: 44px 0; border-bottom: 1px solid var(--line-soft); }
+  .sec-head { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: baseline; margin-bottom: 18px; }
+  .sec-head .n { font-family: var(--mono); font-size: 12px; color: var(--purple); }
+  .sec-head h2 { font-size: 22px; font-weight: 500; letter-spacing: -.02em; margin: 0; }
+  .sec-body { margin-left: 68px; max-width: 820px; }
+  @media (max-width: 760px) { .sec-head { grid-template-columns: 1fr; } .sec-body { margin-left: 0; } }
+  p { margin: 0 0 12px; color: var(--ink-2); }
+  ul, ol { margin: 0 0 12px; padding-left: 20px; color: var(--ink-2); }
+  li { margin: 5px 0; }
+  li::marker { color: var(--ink-4); }
+  h3 { font-size: 15px; font-weight: 600; margin: 22px 0 8px; color: var(--ink); }
+  .note { border-left: 2px solid var(--purple); background: var(--bg-2); padding: 12px 16px; border-radius: 0 var(--r-md) var(--r-md) 0; margin: 14px 0; color: var(--ink-2); }
+  .note b { color: var(--ink); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; color: var(--ink-2); }
+  td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  td code { white-space: nowrap; }
+  .num { text-align: right; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+  th.num { text-align: right; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 18px; background: #fff; }
+  .card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+  .card ul { margin: 0; padding-left: 18px; font-size: 14.5px; }
+  .cta { display: inline-block; background: var(--black); color: #fff; text-decoration: none; font-size: 13.5px; font-weight: 500; padding: 10px 18px; border-radius: var(--r-sm); }
+  footer { padding: 28px 0 48px; color: var(--ink-3); font-size: 12.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media print { .strip, nav .r { display: none; } section { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<div class="strip"><div class="wrap">
+  <span><span class="dot"></span>Búsqueda abierta · Desarrollador/a Full-Stack Senior · Challenge técnico</span>
+  <a href="mailto:alan@mottor.ai">alan@mottor.ai</a>
+</div></div>
+
+<nav><div class="wrap">
+  <a class="logo" href="https://mottor.ai" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2BB4FF"/><stop offset=".5" stop-color="#8A4DFF"/><stop offset="1" stop-color="#FF2DC0"/></linearGradient></defs><circle cx="12" cy="12" r="9" stroke="url(#g)" stroke-width="3.2"/></svg>
+    mottor.ai
+  </a>
+  <div class="r"><a href="https://mottor.ai" target="_blank" rel="noopener">mottor.ai</a><a href="#entrega">Entrega</a><a href="#dudas">Dudas</a></div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Challenge técnico · Dev Full-Stack Senior · v2</div>
+  <h1>Calculadora de presupuestos con <span class="grad">reglas comerciales</span></h1>
+  <p class="lead">Un problema real de nuestro producto: calcular el total de un presupuesto de evento, explicar cómo se llegó a ese número, imprimirlo y trabajar con el histórico de Comercial.</p>
+  <div class="facts">
+    <div><div class="k">Lenguaje</div><div class="v">PHP 8 · Laravel / React</div></div>
+    <div><div class="k">Entrega</div><div class="v">Repositorio + README + AI.md</div></div>
+    <div><div class="k">Plazo</div><div class="v">24 h</div></div>
+    <div><div class="k">Herramientas</div><div class="v">IA obligatoria</div></div>
+  </div>
+</div></header>
+
+<!-- 01 -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="n">01</span><h2>Contexto</h2></div>
+  <div class="sec-body">
+    <p>mottor.ai es la plataforma con la que las productoras de eventos diseñan, presupuestan y producen sus eventos. Un presupuesto tiene decenas de ítems en más de una moneda y, antes de llegar al cliente, pasa por una serie de condiciones comerciales: descuentos por categoría, promociones por cantidad, un tope de descuento e impuestos.</p>
+    <p>Hoy ese cálculo lo hace Comercial a mano, y cuando el cliente pregunta “¿por qué me da este número?”, nadie puede reconstruirlo. Queremos un componente que calcule el total <b>y</b> entregue el desglose paso a paso.</p>
+    <div class="note"><b>Cuatro cosas que sabemos del negocio.</b> Primera: el orden en que se aplican las reglas lo decide quien arma el presupuesto, no el código. Segunda: la semana que viene Comercial nos va a pedir una regla nueva que hoy no conocemos. Queremos que agregarla no obligue a modificar las reglas que ya existen. Tercera: Comercial imprime el presupuesto en un <b>ticket de ancho fijo</b> y necesita el texto de cada evento y de cada ítem partido en renglones. Cuarta: hay que migrar el histórico —un archivo con unos 10.000 presupuestos— y poder listarlo.</div>
+  </div>
+</div></section>
+
+<!-- 02 -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="n">02</span><h2>Lo que recibe el sistema</h2></div>
+  <div class="sec-body">
+    <p>Un presupuesto con sus ítems, el tipo de cambio del día, la moneda en la que se quiere el resultado y la lista <b>ordenada</b> de reglas a aplicar. Este es el caso oficial; más abajo está el resultado que esperamos para él.</p>
+<pre><code>{
+  "budget": {
+    "id": "PRE-2026-0418",
+    "client": "Agencia Norte",
+    "event": "Lanzamiento de producto · 120 personas",
+    "items": [
+      { "id": 1, "description": "Menú de tres pasos", "category": "catering",
+        "quantity": 120, "unit_price": 18000.00, "currency": "ARS" },
+      { "id": 2, "description": "Barra de tragos (módulo)", "category": "catering",
+        "quantity": 3, "unit_price": 150000.00, "currency": "ARS" },
+      { "id": 3, "description": "Sistema de sonido line array", "category": "sonido",
+        "quantity": 1, "unit_price": 1200.00, "currency": "USD" },
+      { "id": 4, "description": "Mesa redonda de 8", "category": "mobiliario",
+        "quantity": 15, "unit_price": 9500.00, "currency": "ARS" },
+      { "id": 5, "description": "Silla tiffany", "category": "mobiliario",
+        "quantity": 120, "unit_price": 1800.00, "currency": "ARS" },
+      { "id": 6, "description": "Coordinador en evento", "category": "personal",
+        "quantity": 2, "unit_price": 85000.00, "currency": "ARS" }
+    ]
+  },
+  "exchange_rates": { "USD_ARS": 1450.00 },
+  "currency": "ARS",
+  "rules": [
+    { "type": "quantity_promo",       "category": "mobiliario", "buy": 3, "pay": 2 },
+    { "type": "category_discount",    "category": "catering",   "percent": 15 },
+    { "type": "percentage_discount",  "percent": 10 },
+    { "type": "fixed_discount",       "amount": 50000.00, "currency": "ARS" },
+    { "type": "discount_cap",         "max_percent": 20 },
+    { "type": "tax",                  "name": "IVA", "percent": 21 }
+  ]
+}</code></pre>
+    <h3>El histórico adjunto</h3>
+    <p>Junto con este documento recibís <code>dataset.json</code>, con esta forma:</p>
+<pre><code>{
+  "version": "v2",
+  "generated_at": "2026-10-26",
+  "count": 10000,
+  "quotes": [
+    { "budget": { "…" : "…" }, "exchange_rates": { "…" : "…" },
+      "currency": "ARS", "rules": [ "…" ] }
+  ]
+}</code></pre>
+  </div>
+</div></section>
+
+<!-- 03 -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="n">03</span><h2>Las reglas</h2></div>
+  <div class="sec-body">
+    <p>Seis reglas iniciales. Cada una se aplica sobre el estado del presupuesto en ese momento de la secuencia, salvo que se indique otra base.</p>
+    <table>
+      <thead><tr><th>Regla</th><th>Qué hace</th><th>Sobre qué base</th></tr></thead>
+      <tbody>
+        <tr><td><code>quantity_promo</code></td><td>Promoción “llevá <code>buy</code>, pagá <code>pay</code>” en una categoría. Por cada <code>buy</code> unidades de un ítem, <code>buy − pay</code> salen gratis. Las unidades que no completan un grupo se pagan.</td><td>Cada ítem de la categoría, a precio de lista.</td></tr>
+        <tr><td><code>category_discount</code></td><td>Descuento porcentual sobre los ítems de una categoría.</td><td>Valor de lista de los ítems de esa categoría (no lo que quedó después de otras reglas).</td></tr>
+        <tr><td><code>percentage_discount</code></td><td>Descuento porcentual sobre todo el presupuesto.</td><td>Subtotal vigente al momento de aplicarse.</td></tr>
+        <tr><td><code>fixed_discount</code></td><td>Descuento de monto fijo, en la moneda indicada.</td><td>Se resta del subtotal vigente, convertido si hace falta.</td></tr>
+        <tr><td><code>discount_cap</code></td><td>Tope: la suma de todos los descuentos aplicados hasta este punto no puede superar <code>max_percent</code>. Si lo supera, se devuelve la diferencia.</td><td>Subtotal del presupuesto a precio de lista, antes de cualquier regla.</td></tr>
+        <tr><td><code>tax</code></td><td>Recargo porcentual (impuesto).</td><td>Subtotal vigente al momento de aplicarse.</td></tr>
+        <tr><td>Aclaración sobre el tope</td><td>El tope cuenta sólo descuentos. Los impuestos no entran en la suma del tope, vaya el impuesto antes o después.</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <h3>Dinero y redondeo</h3>
+    <ul>
+      <li>Los ítems pueden estar en ARS, USD o EUR. El resultado se expresa en la moneda pedida en <code>currency</code>, usando los tipos de cambio recibidos. Se acepta conversión directa o inversa; no hace falta triangular monedas. <code>exchange_rates</code> puede traer más de un par, o venir vacío (<code>{}</code>) cuando no hay nada que convertir; si falta la tasa que hace falta, es un error de validación.</li>
+      <li>El resultado final se muestra con dos decimales. Cómo representás el dinero internamente y en qué momento redondeás es una decisión tuya: tomala y explicala en el README.</li>
+      <li>Todos los montos de la API son números JSON con dos decimales, no texto.</li>
+      <li>Si una regla no aplica a ningún ítem, igual tiene que aparecer en el desglose, con monto cero.</li>
+    </ul>
+
+    <h3>03b · Los renglones del ticket</h3>
+    <p>Esto es lo que imprime el ticket. Los textos <code>budget.event</code> e <code>items[].description</code> se exponen además como una lista de renglones:</p>
+    <ul>
+      <li>Máximo <b>4 renglones</b> de <b>28 caracteres</b> cada uno.</li>
+      <li>El ticket imprime en una grilla de 28 columnas: cada carácter ocupa una columna.</li>
+      <li>Las palabras están separadas por uno o más espacios en blanco. Los espacios al inicio y al final se ignoran. En la salida, las palabras de un renglón se separan con un espacio simple.</li>
+      <li>Las palabras se acomodan de forma <b>voraz</b>: una palabra va al renglón actual si entra, contando el espacio que la separa de la anterior; si no, empieza un renglón nuevo.</li>
+      <li>Una palabra más larga que 28 se corta en trozos de 28; los trozos van en renglones sucesivos y el último trozo puede compartir renglón con las palabras siguientes.</li>
+      <li>Si el texto no entra en 4 renglones, el cuarto se corta a 27 caracteres, sin espacios al final, y se le agrega <code>…</code>, que cuenta como 1 carácter.</li>
+      <li>Un texto vacío produce una lista vacía.</li>
+    </ul>
+    <p>Pseudocódigo normativo (<code>W = 28</code>, <code>L = 4</code>; <code>glen</code> es el largo en caracteres y <code>gsub</code> extrae caracteres):</p>
+<pre><code>words = split(trim(text), /\s+/u) sin vacíos
+lines = []; cur = ""
+for word in words:
+    if cur != "" and glen(cur) + 1 + glen(word) &lt;= W:
+        cur = cur + " " + word
+        continue
+    if cur != "":
+        lines.append(cur); cur = ""
+    while glen(word) &gt; W:
+        lines.append(gsub(word, 0, W)); word = gsub(word, W)
+    cur = word
+if cur != "": lines.append(cur)
+if len(lines) &gt; L:
+    lines = lines[:L]
+    lines[3] = rtrim(gsub(lines[3], 0, W-1)) + "…"
+return lines</code></pre>
+    <p style="margin-top: 14px">Ejemplos:</p>
+<pre><code>"Reunión anual de accionistas · Auditorio Norte"
+→ ["Reunión anual de accionistas", "· Auditorio Norte"]
+
+"Fiesta corporativa de fin de año para toda la planta con cena de gala y show en vivo en el salón principal de Pilar Norte"
+→ ["Fiesta corporativa de fin de", "año para toda la planta con",
+   "cena de gala y show en vivo", "en el salón principal de…"]
+
+"Pantalla LED 6×3 m con operador técnico"
+→ ["Pantalla LED 6×3 m con", "operador técnico"]</code></pre>
+  </div>
+</div></section>
+
+<!-- 04 -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="n">04</span><h2>Lo que tiene que devolver</h2></div>
+  <div class="sec-body">
+    <p>El detalle devuelve el presupuesto, sus renglones, los totales de cada ítem en la moneda de salida y una entrada por regla, en el orden en que se aplicaron. Para el caso oficial:</p>
+<pre><code>{
+  "id": 17,
+  "budget_id": "PRE-2026-0418",
+  "client": "Agencia Norte",
+  "event": "Lanzamiento de producto · 120 personas",
+  "event_lines": ["Lanzamiento de producto ·", "120 personas"],
+  "currency": "ARS",
+  "subtotal": 4878500.00,
+  "total": 4722388.00,
+  "exchange_rates": { "USD_ARS": 1450.00 },
+  "items": [
+    { "id": 1, "description": "Menú de tres pasos",
+      "description_lines": ["Menú de tres pasos"], "category": "catering",
+      "quantity": 120, "unit_price": 18000.00, "currency": "ARS",
+      "line_total": 2160000.00 },
+    { "id": 2, "description": "Barra de tragos (módulo)",
+      "description_lines": ["Barra de tragos (módulo)"], "category": "catering",
+      "quantity": 3, "unit_price": 150000.00, "currency": "ARS",
+      "line_total": 450000.00 },
+    { "id": 3, "description": "Sistema de sonido line array",
+      "description_lines": ["Sistema de sonido line array"], "category": "sonido",
+      "quantity": 1, "unit_price": 1200.00, "currency": "USD",
+      "line_total": 1740000.00 },
+    { "id": 4, "description": "Mesa redonda de 8",
+      "description_lines": ["Mesa redonda de 8"], "category": "mobiliario",
+      "quantity": 15, "unit_price": 9500.00, "currency": "ARS",
+      "line_total": 142500.00 },
+    { "id": 5, "description": "Silla tiffany",
+      "description_lines": ["Silla tiffany"], "category": "mobiliario",
+      "quantity": 120, "unit_price": 1800.00, "currency": "ARS",
+      "line_total": 216000.00 },
+    { "id": 6, "description": "Coordinador en evento",
+      "description_lines": ["Coordinador en evento"], "category": "personal",
+      "quantity": 2, "unit_price": 85000.00, "currency": "ARS",
+      "line_total": 170000.00 }
+  ],
+  "breakdown": [
+    { "step": 1, "type": "quantity_promo", "label": "3x2 en mobiliario",
+      "base": 358500.00, "amount": -119500.00, "running_total": 4759000.00 },
+    { "step": 2, "type": "category_discount", "label": "15% en catering",
+      "base": 2610000.00, "amount": -391500.00, "running_total": 4367500.00 },
+    { "step": 3, "type": "percentage_discount", "label": "10% general",
+      "base": 4367500.00, "amount": -436750.00, "running_total": 3930750.00 },
+    { "step": 4, "type": "fixed_discount", "label": "ARS 50.000",
+      "base": 3930750.00, "amount": -50000.00, "running_total": 3880750.00 },
+    { "step": 5, "type": "discount_cap", "label": "Tope 20%",
+      "base": 4878500.00, "amount": 22050.00, "running_total": 3902800.00 },
+    { "step": 6, "type": "tax", "label": "IVA 21%",
+      "base": 3902800.00, "amount": 819588.00, "running_total": 4722388.00 }
+  ]
+}</code></pre>
+    <p>El listado devuelve una versión resumida de cada presupuesto:</p>
+<pre><code>{
+  "id": 17,
+  "budget_id": "PRE-2026-0418",
+  "client": "Agencia Norte",
+  "event": "Lanzamiento de producto · 120 personas",
+  "event_lines": ["Lanzamiento de producto ·", "120 personas"],
+  "original_currency": "ARS",
+  "original_total": 4722388.00,
+  "currency": "USD",
+  "total": 3256.82
+}</code></pre>
+    <h3>Desglose verificable del caso oficial</h3>
+    <table>
+      <thead><tr><th>#</th><th>Paso</th><th class="num">Base</th><th class="num">Monto</th><th class="num">Acumulado</th></tr></thead>
+      <tbody>
+        <tr><td>—</td><td>Subtotal a precio de lista (USD 1.200 × 1.450 = 1.740.000)</td><td class="num"></td><td class="num"></td><td class="num">4.878.500,00</td></tr>
+        <tr><td>1</td><td><code>quantity_promo</code> mobiliario 3×2: 15 mesas → 5 gratis; 120 sillas → 40 gratis</td><td class="num">358.500,00</td><td class="num">−119.500,00</td><td class="num">4.759.000,00</td></tr>
+        <tr><td>2</td><td><code>category_discount</code> catering 15 %</td><td class="num">2.610.000,00</td><td class="num">−391.500,00</td><td class="num">4.367.500,00</td></tr>
+        <tr><td>3</td><td><code>percentage_discount</code> 10 %</td><td class="num">4.367.500,00</td><td class="num">−436.750,00</td><td class="num">3.930.750,00</td></tr>
+        <tr><td>4</td><td><code>fixed_discount</code> ARS 50.000</td><td class="num">3.930.750,00</td><td class="num">−50.000,00</td><td class="num">3.880.750,00</td></tr>
+        <tr><td>5</td><td><code>discount_cap</code> 20 % de 4.878.500 = 975.700; descontado hasta acá 997.750</td><td class="num">4.878.500,00</td><td class="num">+22.050,00</td><td class="num">3.902.800,00</td></tr>
+        <tr><td>6</td><td><code>tax</code> IVA 21 %</td><td class="num">3.902.800,00</td><td class="num">+819.588,00</td><td class="num">4.722.388,00</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>Segundo caso, sin resultado publicado.</b> No te damos el número: contanos en el README qué decidiste con el redondeo, la conversión, las cantidades que no completan grupo y el orden entre impuesto y tope, y por qué.</div>
+<pre><code>{
+  "budget": {
+    "id": "PRE-2026-0419",
+    "client": "Agencia Norte",
+    "event": "Lanzamiento de producto · 120 personas",
+    "items": [
+      { "id": 1, "description": "Menú de tres pasos", "category": "catering",
+        "quantity": 120, "unit_price": 18000.00, "currency": "ARS" },
+      { "id": 2, "description": "Barra de tragos (módulo)", "category": "catering",
+        "quantity": 3, "unit_price": 150000.00, "currency": "ARS" },
+      { "id": 3, "description": "Sistema de sonido line array", "category": "sonido",
+        "quantity": 2, "unit_price": 1200.00, "currency": "USD" },
+      { "id": 4, "description": "Mesa redonda de 8", "category": "mobiliario",
+        "quantity": 16, "unit_price": 9500.00, "currency": "ARS" },
+      { "id": 5, "description": "Silla tiffany", "category": "mobiliario",
+        "quantity": 121, "unit_price": 1800.00, "currency": "ARS" },
+      { "id": 6, "description": "Coordinador en evento", "category": "personal",
+        "quantity": 2, "unit_price": 85000.00, "currency": "ARS" },
+      { "id": 7, "description": "Pantalla LED 6×3 m con operador técnico",
+        "category": "tecnica", "quantity": 1, "unit_price": 850.00, "currency": "EUR" }
+    ]
+  },
+  "exchange_rates": { "USD_ARS": 1437.35, "EUR_ARS": 1562.10 },
+  "currency": "ARS",
+  "rules": [
+    { "type": "quantity_promo", "category": "mobiliario", "buy": 3, "pay": 2 },
+    { "type": "category_discount", "category": "catering", "percent": 15 },
+    { "type": "percentage_discount", "percent": 12.5 },
+    { "type": "fixed_discount", "amount": 100.00, "currency": "USD" },
+    { "type": "tax", "name": "IVA", "percent": 21 },
+    { "type": "discount_cap", "max_percent": 18 }
+  ]
+}</code></pre>
+  </div>
+</div></section>
+
+<!-- 05 -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="n">05</span><h2>Lo que te pedimos</h2></div>
+  <div class="sec-body">
+    <div class="grid2">
+      <div class="card">
+        <h4>1 · El motor de cálculo</h4>
+        <ul>
+          <li>PHP 8. Puede ser una librería o vivir dentro del proyecto Laravel.</li>
+          <li>Recibe el JSON de la sección 02 y devuelve el resultado de la sección 04.</li>
+          <li>Las reglas y su orden vienen del JSON; el código no asume una secuencia fija.</li>
+          <li>Recordá las cuatro cosas que sabemos del negocio.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>2 · La API</h4>
+        <ul>
+          <li><code>GET /health</code> → <code>200 {"status":"ok"}</code>.</li>
+          <li><code>POST /quotes</code>: recibe un presupuesto, calcula, persiste y devuelve <code>201</code> con el detalle.</li>
+          <li><code>POST /quotes/batch</code>: recibe <code>{"quotes":[…]}</code>, hasta 500, y devuelve <code>201 {"imported": n, "quotes":[{"id","budget_id","currency","total"}]}</code> en el mismo orden. Es atómico: si uno es inválido, devuelve <code>422</code> y no persiste ninguno.</li>
+          <li><code>GET /quotes?currency=ARS&amp;page=1&amp;per_page=50&amp;client=norte</code>: <code>currency</code> por defecto ARS; <code>page</code> ≥ 1 por defecto 1; <code>per_page</code> entre 1 y 200, por defecto 50; <code>client</code> filtra por subcadena sin distinguir mayúsculas. Devuelve <code>{"data":[…], "meta":{"page","per_page","total","last_page"}}</code>, ordenado por <code>id</code> ascendente.</li>
+          <li><code>GET /quotes/{id}</code>: devuelve <code>200</code> con el detalle o <code>404</code>.</li>
+          <li>En el listado, convertí el total con las tasas guardadas de cada presupuesto; devolvé <code>null</code> si no hay tasa directa ni inversa.</li>
+          <li>Errores de validación: <code>422 {"message":"…","errors":{"campo.ruta":["mensaje"]}}</code>. Las respuestas de error son JSON, sin trazas.</li>
+          <li>El front corre en otro origen: configurá CORS para <code>GET</code>, <code>POST</code>, <code>OPTIONS</code> y <code>Content-Type</code>.</li>
+          <li>El listado se resuelve en una sola consulta SQL, más una de conteo si hace falta; mostrala en el README.</li>
+          <li>Laravel es lo que usamos; si preferís otra cosa, decinos por qué <b>en el README</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>3 · El front</h4>
+        <ul>
+          <li>React, en un proyecto independiente de la API: su propio <code>package.json</code>, su propio proceso y comunicación con la API por HTTP.</li>
+          <li><b>Importar:</b> seleccionar <code>dataset.json</code> desde el disco, enviarlo por lotes y mostrar el progreso y los errores de cada lote.</li>
+          <li><b>Listado:</b> mostrar todos los presupuestos importados con cliente, evento en sus renglones y total en la moneda elegida (ARS, USD o EUR), con filtro por cliente. Tiene que seguir siendo cómodo de usar con el histórico completo.</li>
+          <li><b>Detalle:</b> mostrar subtotal, total, ítems con sus renglones y el desglose paso a paso.</li>
+          <li><b>Vista previa:</b> en el detalle, permitir editar la descripción de un ítem y mostrar en vivo sus renglones. Calculalos en el navegador, sin llamar a la API; no hace falta guardar la edición.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>4 · Pruebas y documentación</h4>
+        <ul>
+          <li>Incluí tests que corran con un comando en cada parte. El caso oficial tiene que pasar tal cual.</li>
+          <li>En el README raíz explicá cómo correr todo y las decisiones sobre redondeo, conversión, cómo se agrega una regla, qué pasa con un <code>type</code> desconocido, cómo resolviste el listado del histórico y cuál es su SQL. Contá también qué quedó afuera y cuánto tiempo real te llevó.</li>
+          <li><code>AI.md</code> es obligatorio. La IA también lo es en este challenge: queremos ver tu criterio. Incluí al menos tres ejemplos concretos con el formato “qué le pedí / qué me devolvió / qué estaba mal o qué cambié y por qué”. Si la IA no se equivocó nunca, contanos qué verificaste para saberlo.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note" style="margin-top: 18px"><b>Sobre el alcance.</b> Nos interesa más el cómo que el cuánto. Preferimos una solución clara con una parte sin terminar y explicada, que una completa que no se pueda leer. Si algo de la consigna te parece ambiguo, decidí y documentalo: también es parte de lo que miramos. Si algo no entra en el plazo, priorizá y decí qué dejaste afuera y por qué.</div>
+    <p><b>No hace falta:</b> autenticación, deploy, CI, pruebas de punta a punta del front, triangulación de monedas, monedas sin centavos, edición o borrado de presupuestos ni evitar duplicados por <code>budget_id</code>.</p>
+  </div>
+</div></section>
+
+<!-- 06 -->
+<section id="entrega"><div class="wrap">
+  <div class="sec-head"><span class="n">06</span><h2>Entrega y qué sigue</h2></div>
+  <div class="sec-body">
+    <ul>
+      <li><b>Plazo:</b> 24 horas desde que recibiste el mail con este documento.</li>
+      <li><b>Formato:</b> repositorio privado en GitHub o GitLab compartido con <code>alan@mottor.ai</code>, o un <code>.zip</code> adjunto al mail de respuesta.</li>
+      <li><b>Estructura:</b> <code>api/</code> y <code>web/</code> en la raíz. No incluyas <code>vendor/</code> ni <code>node_modules/</code>. Incluí <code>composer.lock</code> y <code>package-lock.json</code>, <code>pnpm-lock.yaml</code> o <code>yarn.lock</code>, según corresponda.</li>
+      <li><b>Después:</b> dentro de las 48 horas de recibida tu entrega te proponemos una llamada de 75 minutos con Alan y uno de los desarrolladores del equipo. Recorremos tu solución, la modificamos un poco en vivo —vamos a importar el histórico completo y usarlo— y conversamos. Esa llamada es la instancia técnica del proceso.</li>
+    </ul>
+    <p style="margin-top: 16px"><a class="cta" href="mailto:alan@mottor.ai?subject=Challenge%20t%C3%A9cnico%20%C2%B7%20Calculadora%20de%20presupuestos%20%C2%B7%20entrega">Enviar la entrega →</a></p>
+  </div>
+</div></section>
+
+<!-- 07 -->
+<section id="dudas"><div class="wrap">
+  <div class="sec-head"><span class="n">07</span><h2>Dudas</h2></div>
+  <div class="sec-body">
+    <p>Escribile a Alan a <a href="mailto:alan@mottor.ai">alan@mottor.ai</a>. Respondemos durante el día. Si la duda es sobre el negocio (“¿el tope incluye la promo por cantidad?”), es probable que la respuesta sea “decidilo vos y contanos”: así funciona también acá adentro.</p>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>mottor.ai · MOTTOR SOLUTIONS LLC · Challenge técnico para la búsqueda Dev Full-Stack Senior · Octubre 2026</span>
+  <span>Este documento y los datos de ejemplo son ficticios y de uso exclusivo del proceso de selección.</span>
+</div></footer>
+
+</body>
+</html>
