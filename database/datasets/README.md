@@ -24,6 +24,8 @@ Las rutas de error (`quotes.{n}...`) usan el índice **dentro del lote** (de 0 a
 | `errors-one-batch.json` | 1.200 | 3 | Los dos | Falla solo el **lote 2**: `422` en `quotes.242.budget.items.0.quantity` (`quantity: 0`; índice global 742, `PRE-2026-0743`). Los lotes 1 y 3 se importan: 700 presupuestos y 1 lote fallido (en cola queda `completed_with_errors`) |
 | `errors-mixed.json` | 34 | 1 | Sincrónico (con el modal de errores) | `422` y no se guarda ninguno. Hay 25 inválidos, cada uno con un error distinto (ver la tabla de abajo), y 9 válidos |
 | `ticket-edge.json` | 12 | 1 | Sincrónico | `201`, se importan los 12. Son textos al límite del ticket de 28 × 4 (ver la tabla de abajo) |
+| `valid-v2.json` | 56 | 1 | Sincrónico | `201`, se importan los 56. Se genera con `generate-v2.php` y cubre bordes válidos (ver [Datasets v2](#datasets-v2-generados)) |
+| `invalid-v2.json` | 98 casos | — | No se importa | Catálogo de casos sueltos (`cases`, sin la clave `quotes`): cada uno trae `id`, `title`, `expected_errors` y `quote`. Lo usa `QuoteDatasetV2Test`, que manda cada `quote` a `POST /quotes` |
 | `invalid-json.json` | — | — | Cualquiera | Lo frena el front con "El archivo no es un JSON válido." (es un JSON cortado a la mitad). Si se manda directo a `POST /imports`: `422` en `file` |
 | `empty-quotes.json` | 0 | — | Cualquiera | Lo frena el front con "El archivo no tiene presupuestos." (`"quotes": []`). Si se manda directo a `POST /imports`: `422` en `quotes` |
 | `wrong-shape.json` | 3 | — | Cualquiera | Lo frena el front con "El JSON tiene que ser {"quotes": [...]} o un array." (la lista está en `presupuestos` y falta la clave `quotes`). Si se manda directo a `POST /imports`: `422` en `file` |
@@ -103,6 +105,17 @@ Notas:
 - La bandera 🇦🇷 cuenta 2 code points y la familia 👨‍👩‍👧 cuenta 5 (con los ZWJ), aunque cada una se vea como un solo símbolo.
 - `PRE-2026-T011` tiene tabs, saltos de línea y espacios dobles a propósito.
 
+## Datasets v2 generados
+
+`valid-v2.json` e `invalid-v2.json` vienen del PR #3 (antes estaban en `tests/Fixtures/datasets/`). Los genera `generate-v2.php`, con un PRNG xorshift32 propio (semilla `20261028`) y montos escritos como literales decimales, así que la salida es la misma byte a byte en cualquier máquina.
+
+- **`valid-v2.json`**: 32 presupuestos armados a mano y 24 con la semilla. Cubre los 6 pares ARS/USD/EUR en ambas direcciones (también solo con la tasa inversa), los 6 tipos de regla (los 6 en un mismo presupuesto), salida e ítems en las 3 monedas y bordes válidos: sin reglas, sin tasas, precio 0, `fixed_discount` de 0 y en otra moneda, porcentaje y tope en 0 y 100, `pay` 0, categoría sin ítems, promo con resto, evento de más de 112 caracteres, palabra de más de 28 y `budget.id` repetido.
+  - Los descuentos de los 24 presupuestos con semilla llegan como mucho al 50 %. Con un 100 % seguido de un descuento fijo o una promo, el total quedaba negativo y la API lo rechaza (CAL-11). El caso del 100 % sigue en `VAL-2026-0009`.
+- **`invalid-v2.json`**: 98 casos etiquetados con el código de error que les puso el validador de referencia del generador (`tests/Support/QuoteDatasetValidator.php`).
+  - La API real es la que manda. `QuoteDatasetV2Test` espera `422` en 82 casos y, salvo en 12, que la ruta etiquetada esté entre las claves de `errors`. En esos 12, Laravel marca el campo anidado (por ejemplo `budget.id` en vez de `budget`), una moneda no soportada aparece como tasa faltante en `exchange_rates` (FX-03) o el error de dominio llega en el reintento (dos etapas).
+  - Los otros 16 casos los **acepta** la API (`201`) porque la spec no los prohíbe: números como texto (`"10"`, `"18000.00"`) e ids numéricos, ya que ADR-08 acota valores y no el tipo del token JSON; montos y porcentajes con 3 decimales, porque CAL-12 redondea cada monto; `exchange_rates: []`, que es el mismo conjunto vacío que `{}`; pares sobrantes como `USD_USD` o `GBP_ARS`, porque FX-01 solo lee los pares que necesita; y `pay` igual a `buy`, porque ADR-08 permite `pay ≤ buy`. La lista está en `QuoteDatasetV2Test::SPEC_ACCEPTED_CASES`.
+- **El dataset oficial no se copia.** El PR traía `official-v2.json`, idéntico byte a byte al `dataset.json` de ejemplo (sha256 `fb8f930b…f82`, 10 MB). Ya está montado en `/inputs/dataset.json` (`DATASET_PATH`) y pasa el límite de 5 MB para versionar. `QuoteDatasetV2Test` verifica ahí su hash, los pares (`USD_ARS` 9.825, `EUR_ARS` 2.084, `ARS_USD` 175), los 1.401 presupuestos sin reglas, los 1.579 que usan una tasa inversa y que `quotes:validate-dataset` dé 0 inválidos. Si el archivo no está montado, ese test se saltea.
+
 ## Cómo se verificaron
 
 1. **Pipeline real del back, sin guardar nada.** Se usó un script local de solo lectura (no versionado), corrido dentro del contenedor de Sail.
@@ -117,6 +130,12 @@ Notas:
 ## Regenerarlos
 
 Los JSON versionados se generaron una vez a partir del `dataset.json` de ejemplo (sha256 `fb8f930b…f82`), y se editan a mano si cambia un caso.
+
+Los v2 no se editan a mano: se cambia `generate-v2.php` y se regeneran. `QuoteDatasetV2Test` falla si los archivos versionados no coinciden byte a byte con la salida del script.
+
+```bash
+./vendor/bin/sail php database/datasets/generate-v2.php
+```
 
 `too-many.json` pesa unos 10 MB, así que **no se versiona** (está en `.gitignore`). Para generarlo:
 
