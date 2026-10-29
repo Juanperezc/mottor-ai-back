@@ -1,5 +1,13 @@
 # mottor-ai-back
 
+[![Release](https://img.shields.io/badge/release-v0.1.0-blue)](https://github.com/Juanperezc/mottor-ai-back/releases)
+[![Tests](https://img.shields.io/badge/tests-66%20passed-brightgreen?logo=php&logoColor=white)](#tests-y-validación-del-dataset)
+[![Cobertura](https://img.shields.io/badge/coverage-94.8%25-brightgreen)](#tests-y-validación-del-dataset)
+[![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Demo API](https://img.shields.io/badge/demo-mottor.tulinkfacil.com-0A0A0A)](https://mottor.tulinkfacil.com/)
+
 API en Laravel 13 para el desafío de presupuestos de Mottor AI. Calcula presupuestos de eventos (quotes) con un pipeline ordenado de reglas comerciales y guarda el resultado con su desglose completo. También lista el histórico en cualquier moneda e importa el dataset de 10.000 presupuestos, de forma síncrona o mediante una cola con progreso en vivo.
 
 | Capa | Elección |
