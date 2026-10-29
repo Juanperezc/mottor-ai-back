@@ -7,14 +7,12 @@ namespace Tests\Support;
 use stdClass;
 
 /**
- * Contract checker for a v2 quote payload.
+ * Reference checker used by database/datasets/generate-v2.php to label the
+ * invalid-v2 cases and to keep the valid-v2 quotes well formed.
  *
- * App\Domain\Money\RateSet and App\Http\Requests\QuoteValidationRules are not
- * in this repository. Until they exist, dataset tests check this stand-in.
- * The rules follow the official challenge statement (dataset v2): ARS/USD/EUR,
- * direct or inverse pairs, no triangulation, JSON numbers for money, and the
- * six rule types. Assumptions that the statement leaves open are documented
- * in tests/Fixtures/datasets/README.md.
+ * It is stricter than the API (only ARS/USD/EUR, JSON numbers, two decimals,
+ * pay < buy). The API is the source of truth: QuoteDatasetV2Test posts every
+ * case and lists the ones the spec accepts. See database/datasets/README.md.
  *
  * @phpstan-type QuoteError array{path: string, code: string, detail: string}
  */
@@ -134,7 +132,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateBudget(stdClass $budget, array &$errors): void
     {
@@ -172,7 +170,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateItem(stdClass $item, string $path, array &$errors): void
     {
@@ -190,7 +188,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateItemId(stdClass $item, string $path, array &$errors): void
     {
@@ -213,7 +211,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateQuantity(stdClass $item, string $path, array &$errors): void
     {
@@ -242,7 +240,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validatePrice(stdClass $item, string $path, array &$errors): void
     {
@@ -263,7 +261,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      * @return array<string, true> pair keys whose value is a positive number
      */
     private function validateRates(stdClass $rates, array &$errors): array
@@ -317,7 +315,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateRules(array $rules, array &$errors): void
     {
@@ -359,7 +357,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateQuantityPromo(stdClass $rule, string $path, array &$errors): void
     {
@@ -376,7 +374,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateCategoryDiscount(stdClass $rule, string $path, array &$errors): void
     {
@@ -385,7 +383,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateFixedDiscount(stdClass $rule, string $path, array &$errors): void
     {
@@ -410,7 +408,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateTax(stdClass $rule, string $path, array &$errors): void
     {
@@ -419,8 +417,8 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param array<string, true> $usableRates
-     * @param list<QuoteError> $errors
+     * @param  array<string, true>  $usableRates
+     * @param  list<QuoteError>  $errors
      */
     private function validateRequiredRates(stdClass $quote, string $output, array $usableRates, array &$errors): void
     {
@@ -462,7 +460,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function requireText(object $source, string $field, string $path, array &$errors): void
     {
@@ -485,7 +483,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateCurrency(mixed $value, string $path, array &$errors): ?string
     {
@@ -511,7 +509,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function requirePercent(object $rule, string $field, string $path, array &$errors): void
     {
@@ -540,7 +538,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      * @return int|null whole number, or null when the field is already reported
      */
     private function wholeRuleNumber(object $rule, string $field, string $path, array &$errors): ?int
@@ -568,7 +566,7 @@ final class QuoteDatasetValidator
     }
 
     /**
-     * @param list<QuoteError> $errors
+     * @param  list<QuoteError>  $errors
      */
     private function validateMoneyAmount(
         mixed $value,
