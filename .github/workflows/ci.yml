@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [staging, main]
+  pull_request:
+    branches: [staging, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Pint + PHPUnit (coverage)
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
+      tests: ${{ steps.coverage.outputs.tests }}
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+          MYSQL_USER: sail
+          MYSQL_PASSWORD: password
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -ppassword"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+
+      # phpunit.xml forces DB_HOST=mysql (the Sail service name).
+      - name: Map Sail hostnames to the service containers
+        run: echo "127.0.0.1 mysql redis" | sudo tee -a /etc/hosts
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: bcmath, intl, mbstring, pdo_mysql, redis
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare .env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Pint
+        run: vendor/bin/pint --test
+
+      - name: PHPUnit with coverage
+        run: |
+          php artisan config:clear
+          vendor/bin/phpunit --colors=never \
+            --coverage-clover build/coverage/clover.xml \
+            --coverage-html build/coverage/html \
+            --coverage-text=build/coverage/coverage.txt \
+            --log-junit build/coverage/junit.xml
+          cat build/coverage/coverage.txt
+
+      - name: Coverage summary
+        id: coverage
+        run: |
+          python3 - <<'PY'
+          import os
+          import xml.etree.ElementTree as ET
+
+          metrics = ET.parse("build/coverage/clover.xml").getroot().find("project/metrics")
+          junit = ET.parse("build/coverage/junit.xml").getroot()
+          suite = junit if junit.tag == "testsuite" else junit.find("testsuite")
+          tests = int(suite.get("tests"))
+
+          def pct(covered, total):
+              covered, total = int(metrics.get(covered)), int(metrics.get(total))
+              return (100 * covered / total if total else 100.0), covered, total
+
+          lines, lc, lt = pct("coveredstatements", "statements")
+          methods, mc, mt = pct("coveredmethods", "methods")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"coverage={lines:.1f}\ntests={tests}\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as out:
+              out.write("## Cobertura (PHPUnit)\n\n")
+              out.write(f"**{tests} tests OK**\n\n")
+              out.write("| Métrica | Cubierto | Total | % |\n| --- | --- | --- | --- |\n")
+              out.write(f"| Líneas | {lc} | {lt} | {lines:.1f}% |\n")
+              out.write(f"| Métodos | {mc} | {mt} | {methods:.1f}% |\n")
+          PY
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-back
+          path: build/coverage/
+          if-no-files-found: ignore
+
+  badges:
+    name: Publish badges
+    needs: tests
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: badges-${{ github.repository }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+      - name: Commit badges to the badges branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/publish-badges.sh "${{ needs.tests.outputs.coverage }}" "${{ needs.tests.outputs.tests }}"

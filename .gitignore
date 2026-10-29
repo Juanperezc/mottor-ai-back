@@ -18,3 +18,4 @@
 
 # Generated test dataset (>5 MB): database/datasets/generate-too-many.php
 /database/datasets/too-many.json
+/build
